@@ -1,0 +1,80 @@
+## PYTHON
+FIRST MAKE A DICTIONARY FOR PRODUCT amd couriers - usually SQL
+INPUT new order  - py commandline stuff
+Nested loop for PREPARING AND OUT FOR DELIVERY, DELIVERED -usally using SQL 
+Save the after finishing - KEEPING DATA in sql tables or archive it
+
+
+### python and sql programs needed
+txt file is where it saved and csv as well
+
+
+# BRAINSTORM from app.py
+
+# product_names = cafe_product.keys()
+# print(product_names)
+
+# dictionary['ONE'] = dictionary.pop(1)
+
+
+# if you wanted to add a Y / N (yes or no) to accept it before it is deleted.
+# the while loop of 
+    # while True:
+    #     print('Are you sure you want to delete this product?')
+    #     confirm = str(input('Confirm Y(yes)/N(no): '))
+    #     if confirm == 'y' or confirm == 'yes':
+    #         print('Deleting the product...')
+    #         del cafe_product[old_product]
+    #         print('Deleted')
+    #         break
+    #     elif confirm == 'n' or confirm == 'no':
+    #         print('Back to main menu')
+    #         break   
+    #     else:
+    #         print('Invalid input')
+    #         continue
+    # break
+        
+
+
+
+# while True:
+#     End_loop =
+#     if End_loop
+
+#     elif End_loop
+
+#     product =  Input('Input the product in the menu: ')
+#     price = Input('Input the product in the menu: ')
+
+
+# for option 5 shortened
+                # cafe_products = cafe_product.keys()
+                # cafe_price = cafe_product.values()
+                # for i, products in enumerate(cafe_products):
+                #     for i, price in enumerate(cafe_price):
+                #         if i == indx:
+                #             print(f'{product}: £{price:.2f}')
+                #         else:
+                #             continue
+                    
+# First attempt of option 5 full menu
+    # cafe_products = cafe_product.keys()
+                # cafe_price = cafe_product.values()
+                # full_menu_product = []
+                # full_menu_price = []
+                # for i, products in enumerate(cafe_products):
+                #     full_menu_product.append(products)
+                # for i, price in enumerate(cafe_price):
+                #     full_menu_price.append(price)
+                # # print(full_menu_price) - checking
+                # # print(full_menu_product) - checking
+                # for i, product in enumerate(full_menu_product):
+                #     for indx, price in enumerate(full_menu_price):
+                #         if i == indx:
+                #             print(f'{product}: £{price:.2f}')
+                #         else:
+                #             continue
+
+                # continue
+
