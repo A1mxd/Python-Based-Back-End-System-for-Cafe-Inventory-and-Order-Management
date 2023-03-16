@@ -6,7 +6,7 @@ Save the after finishing - KEEPING DATA in sql tables or archive it
 
 
 ### python and sql programs needed
-txt file is where it saved and csv as well
+the orders is saved on a json file
 
 
 # BRAINSTORM from app.py
