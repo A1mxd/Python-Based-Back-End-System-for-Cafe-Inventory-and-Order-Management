@@ -41,9 +41,10 @@ def Order_menu_function():
                                 \n(5) to delete order \n\n\n\
                                 \nType the number: '))  
 
-def print_index_products():
+def print_index_products(cafe_product):
     global product_list
     global indx
+    # global cafe_products
     cafe_products = cafe_product.keys()
     product_list = {     
                     }
@@ -51,7 +52,7 @@ def print_index_products():
                         print(f'{indx} : {products}')   
                         product_list[indx] = products
 
-def full_menu_order():
+def full_menu_order(cafe_product):
     cafe_products = cafe_product.keys()
     cafe_price = cafe_product.values()
     for i, products in enumerate(cafe_products):
@@ -60,176 +61,186 @@ def full_menu_order():
                 print(f'{products}: £{price:.2f}')
             else:
                 continue
-# need to try for all the input ones 
 
+# need to try for all the input ones 
+if __name__ == '__main__':
+    
 #TODO: fix my main menu into function and also check if the dictionary is fine for the order menu
 # Main Menu #
-while True:
-    clear_screen()
-    Main_menu_user_input()
-    if m_user_input == 1:
+    while True:
+        clear_screen()
+        Main_menu_user_input()
+        if m_user_input == 1:
 
-        #Products Menu#
-        while True:
-            clear_screen()
-            Product_menu_input()
-            if pm_user_input == 0:
+            #Products Menu#
+            while True:
                 clear_screen()
-                print('\t***Returning to main menu***')
-                short_pause()
-                break
-
-            elif pm_user_input == 1:
-                clear_screen()
-                print_products()
-                continue
-
-            # CREATE new product
-            elif pm_user_input == 2:
-                clear_screen()
-                print('\t***Input New Product***')
-                try:
-                    new_product = input('Input the new product: ')
-                    new_price = float(input('Input the new product price: £'))
-                except:
-                    print('Invalid Input')
-                cafe_product[new_product] = new_price
-                print_products()
-                short_pause()
-                continue
-
-            # UPDATE existing product
-            elif pm_user_input == 3:
-                clear_screen()
-                print('\t***Product List***')
-                cafe_products = cafe_product.keys()
-                print_index_products()
-                indx_user_input = int(input('Input the index value of the product: '))
-                if indx_user_input <= indx and not indx_user_input<= 0:  
-                    #TODO: new menu for price update or name update  - below example
+                Product_menu_input()
+                if pm_user_input == 0:
                     clear_screen()
-                    old_product = str(product_list[indx_user_input])
-                    print('\t***Update exisiting Product***')
-                    customer_input = int(input('(1) to update product name \
-                                                \n(2) to update product price\
-                                                \n(3) to update both product price and name  \n\n\n\
-                                                \nType the number:'))
-                    
-                    if customer_input == 1:
-                        update_product_name = str(input('\nInput the new product name: '))
-                        cafe_product[update_product_name] = cafe_product.pop(old_product)
-                    elif customer_input == 2:
-                        update_product_price = float(input('\nInput the new product price: '))
-                        cafe_product[old_product]  = update_product_price
-                    elif customer_input == 3:
-                        update_product_name = str(input('\nInput the new product name: '))
-                        cafe_product[update_product_name] = cafe_product.pop(old_product)
-                        update_product_price = float(input('Input the new product price: £'))
-                        cafe_product[old_product]  = update_product_price
-                    else:
-                        print('Invalid Input')
+                    print('\t***Returning to main menu***')
                     short_pause()
+                    break
+
+                elif pm_user_input == 1:
                     clear_screen()
-                    full_menu_order()
+                    print_products(cafe_product)
+                    continue
+
+                # CREATE new product
+                elif pm_user_input == 2:
+                    clear_screen()
+                    print('\t***Input New Product***')
+                    try:
+                        new_product = input('Input the new product: ')
+                        new_price = float(input('Input the new product price: £'))
+                    except:
+                        print('Invalid Input')
+                    cafe_product[new_product] = new_price
+                    print_products(cafe_product)
+                    save_product()
                     short_pause()
                     continue
-                else :
-                    print('Invalid index')
+
+                # UPDATE existing product
+                elif pm_user_input == 3:
+                    clear_screen()
+                    print('\t***Product List***')
+                    # cafe_products = cafe_product.keys()
+                    print_index_products(cafe_product)
+                    indx_user_input = int(input('Input the index value of the product: '))
+                    if indx_user_input <= indx and not indx_user_input<= 0:  
+                        #TODO: new menu for price update or name update  - below example
+                        clear_screen()
+                        old_product = str(product_list[indx_user_input])
+                        print('\t***Update exisiting Product***')
+                        customer_input = int(input('(1) to update product name \
+                                                    \n(2) to update product price\
+                                                    \n(3) to update both product price and name  \n\n\n\
+                                                    \nType the number:'))
+                        
+                        if customer_input == 1:
+                            update_product_name = str(input('\nInput the new product name: '))
+                            cafe_product[update_product_name] = cafe_product.pop(old_product)
+                        elif customer_input == 2:
+                            update_product_price = float(input('\nInput the new product price: '))
+                            cafe_product[old_product]  = update_product_price
+                        elif customer_input == 3:
+                            update_product_name = str(input('\nInput the new product name: '))
+                            cafe_product[update_product_name] = cafe_product.pop(old_product)
+                            update_product_price = float(input('Input the new product price: £'))
+                            cafe_product[old_product]  = update_product_price
+                        else:
+                            print('Invalid Input')
+                        update_saved_product()
+                        short_pause()
+                        clear_screen()
+                        full_menu_order(cafe_product)
+                        short_pause()
+                        continue
+                    else :
+                        print('Invalid index')
+                        continue
+                    
+                # DELETE product
+                elif pm_user_input == 4:
+                    cafe_products = cafe_product.keys()
+                    print_index_products(cafe_product)
+                    indx_user_input = int(input('Input the index value of the product: '))
+                    if indx_user_input <= indx:  
+                        old_product = str(product_list[indx_user_input])
+                        print(f'You chose the product {old_product} to delete.')
+                        del cafe_product[old_product]
+                        for products in cafe_product.keys():
+                            print(products)
+                        short_pause()
+                        update_saved_product()             
+                        continue
+                    else :
+                        print('Invalid index')
+                        continue
+
+                # Full menu with prices
+                elif pm_user_input == 5:
+                    full_menu_order(cafe_product)
+                    short_pause()
                     continue
                 
-            # DELETE product
-            elif pm_user_input == 4:
-                cafe_products = cafe_product.keys()
-                print_index_products()
-                indx_user_input = int(input('Input the index value of the product: '))
-                if indx_user_input <= indx:  
-                    old_product = str(product_list[indx_user_input])
-                    print(f'You chose the product {old_product} to delete.')
-                    del cafe_product[old_product]
-                    for products in cafe_product.keys():
-                        print(products)
-                    short_pause()             
-                    continue
-                else :
-                    print('Invalid index')
+                else:
+                    print('Invalid Input')
+                continue
+
+        # Orders Menu ##    
+        elif m_user_input == 2:
+            clear_screen()
+            # Returns to main menu from order menu
+        
+            
+            while True:
+                clear_screen()
+                Order_menu_function()  
+                # return to main menu     
+                if om_user_input == 0:
+                    return_main()
+                    break
+
+                # Print orders
+                elif om_user_input == 1:
+                    print_orders()
+                    long_pause()
                     continue
 
-            # Full menu with prices
-            elif pm_user_input == 5:
-                full_menu_order()
-                short_pause()
-                continue
-            
-            else:
-                print('Invalid Input')
+                # New order
+                elif om_user_input == 2:
+                    clear_screen()
+                    order_number()
+                    print('\t***Input New Order***')
+                    new_order()
+                    save_order()
+                    clear_screen()
+                    print(f'\t***Your Order number is {no}***')
+                    long_pause()
+                    continue
+
+                elif om_user_input == 3:
+                    update_order_status()
+                    update_saved_order()
+                    continue
+                elif om_user_input == 3:
+                    update_order()
+                    update_saved_order()
+                    continue
+
+                elif om_user_input == 4:
+                    update_order()
+                    update_saved_order()
+                    continue
+
+                elif om_user_input == 5:
+                    delete_order()
+                    update_saved_order()
+                    continue
+
+                else:
+                    print('Invalid Input')
+                    clear_screen()
+                    continue
+        #TODO: need to start on the courier option
+        elif m_user_input == 3:
             continue
 
-    # Orders Menu ##    
-    elif m_user_input == 2:
-        clear_screen()
-        # Returns to main menu from order menu
-       
-        
-        while True:
-            clear_screen()
-            Order_menu_function()  
-            # return to main menu     
-            if om_user_input == 0:
-                return_main()
-                break
 
-            # Print orders
-            elif om_user_input == 1:
-                print_orders()
-                long_pause()
-                continue
-
-            # New order
-            elif om_user_input == 2:
-                clear_screen()
-                order_number()
-                print('\t***Input New Order***')
-                new_order()
-                save_order()
-                clear_screen()
-                print(f'\t***Your Order number is {no}***')
-                long_pause()
-                continue
-
-            elif om_user_input == 3:
-                update_order_status()
-                continue
-            elif om_user_input == 3:
-                update_order()
-                continue
-
-            elif om_user_input == 4:
-                update_order()
-                continue
-
-            elif om_user_input == 5:
-                delete_order()
-                continue
-            else:
-                print('Invalid Input')
-                clear_screen()
-                continue
-    #TODO: need to start on the courier option
-    elif m_user_input == 3:
-        continue
-
-
-                
+                    
 
 
 
-    # Ending the whole code and loop 
-    elif m_user_input == 0:
-        exit_app()
-    # Incorrect inputs and return back to while loop
-    else :
-        print('Invalid Input')
-        continue
+        # Ending the whole code and loop 
+        elif m_user_input == 0:
+            exit_app()
+        # Incorrect inputs and return back to while loop
+        else :
+            print('Invalid Input')
+            continue
 
 
 

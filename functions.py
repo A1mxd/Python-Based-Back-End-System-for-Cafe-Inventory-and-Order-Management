@@ -47,7 +47,7 @@ def exit_app():
     exit()
 
 # Print products    
-def print_products():
+def print_products(cafe_product):
     print('List of products in the menu:')
     for products in cafe_product.keys():
         print(products)
@@ -93,7 +93,21 @@ def print_orders():
         address = orders['customer_address']
         phone = orders['customer_phone']
         print(f'Order Number: {key} - Name: {name}, address: {address}, Phone number: {phone}, Status: {status}')
-    
+
+def save_product():
+    with open('products.json', 'w+') as products_file:
+        json.dump(cafe_product, products_file)
+        
+    products_file.close()
+    return
+
+def update_saved_product():
+    with open('products.json', 'w+') as products_file:
+        json.dump(cafe_product, products_file)
+        
+    products_file.close()
+    return
+
 
 def new_order():
     # print('\tAdding new order')
@@ -116,18 +130,11 @@ def new_order():
     return
 
 def save_order():
-        try:
-            new_order_number = sorted(order_list.keys())[-1]
-            new_order = order_list[new_order_number]
-            with open('orders.txt', 'a') as customer:
+        with open('orders.json', 'w+') as orders_file:
+            json.dump(order_list, orders_file)
+            
+        orders_file.close()
 
-                for orders in order_list:
-                    customer.write(str(order_list) +': '+ str(new_order) + '\n')
-
-        except FileNotFoundError as e:
-            print(f'Cannot find file: {e}')
-        finally:
-            customer.close()    
         return
 
     
@@ -150,7 +157,10 @@ def update_order_status():
     return
 
 def update_saved_order():
-
+    with open('orders.json', 'w+') as orders_file:
+        json.dump(order_list, orders_file)
+        
+    orders_file.close()
     return
 
 def update_order():

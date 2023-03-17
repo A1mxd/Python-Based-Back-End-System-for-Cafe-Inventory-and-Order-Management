@@ -185,3 +185,15 @@
 
 
 ## my_list = list(my_dict.keys()) - this is to changhe the dictionary keys so the product into a list 
+# try:
+#             new_order_number = sorted(order_list.keys())[-1]
+#             new_order = order_list[new_order_number]
+#             with open('orders.txt', 'a') as customer:
+
+#                 for orders in order_list:
+#                     customer.write(str(order_list) +': '+ str(new_order) + '\n')
+
+#         except FileNotFoundError as e:
+#             print(f'Cannot find file: {e}')
+#         finally:
+#             customer.close()   
