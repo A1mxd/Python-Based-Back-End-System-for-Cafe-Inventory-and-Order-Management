@@ -1,1 +1,18 @@
-{"Chocolate Brownie": 5.95, "Tea": 1.2, "21": 12121.0}
+[
+    {
+        "name": "Chocolate Brownie",
+        "price": 5.95
+    },
+    {
+        "name": "Tea",
+        "price": 1.2
+    },
+    {
+        "name": "Decaffeinated Coffee",
+        "price": 1.7
+    },
+    {
+        "name": "Porridge",
+        "price": 4.95
+    }
+]

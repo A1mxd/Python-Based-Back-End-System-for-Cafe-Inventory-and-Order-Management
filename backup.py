@@ -197,3 +197,14 @@
 #             print(f'Cannot find file: {e}')
 #         finally:
 #             customer.close()   
+
+# def print_index_products(cafe_product):
+#     global product_list
+#     global index
+#     # global cafe_products
+#     cafe_products = cafe_product.keys()
+#     product_list = {     
+#                     }
+#     for index, products in enumerate(cafe_products):
+#                         print(f'{index} : {products}')   
+#                         product_list[index] = products
