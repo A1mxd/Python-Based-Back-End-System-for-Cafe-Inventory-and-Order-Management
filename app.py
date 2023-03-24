@@ -10,13 +10,6 @@ def order_number():
     global no
     no += 1
 
-def full_menu_product(product_list):
-    print('\t***Full Product Menu***')
-    for products in product_list:
-        name = products['name']
-        price = products["price"]
-        print(f'Name: {name}, Price: {price:.2f}')
-
 # need to try for all the input ones 
 if __name__ == '__main__':
     

@@ -260,7 +260,13 @@ def delete_product(delete_products):
     else:
         invalid_input()
         return   
-
+    
+def full_menu_product(product_list):
+    print('\t***Full Product Menu***')
+    for products in product_list:
+        name = products['name']
+        price = products["price"]
+        print(f'Name: {name}, Price: {price:.2f}')
 
 def save_product():
     with open('products.json', 'w+') as products_file:
