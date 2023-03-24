@@ -142,29 +142,34 @@ if __name__ == '__main__':
                     clear_screen()
                     order_number()
                     print('\t***Input New Order***')
-                    new_order()
+                    customer_name = input('Input your name: ')
+                    customer_address = input('Input your address: ')
+                    # TODO: need to make it 11 digit number
+                    customer_phone = input('Input your phone number: ')
+                    new_order(customer_name, customer_address, customer_phone)
                     save_order()
                     clear_screen()
-                    print(f'\t***Your Order number is {no}***')
+                    print_orders()
                     long_pause()
                     continue
 
                 elif om_user_input == 3:
-                    update_order_status()
+                    update_order_status(order_list)
                     update_saved_order()
                     continue
+
                 elif om_user_input == 3:
-                    update_order()
+                    update_order(order_list)
                     update_saved_order()
                     continue
 
                 elif om_user_input == 4:
-                    update_order()
+                    update_order(order_list)
                     update_saved_order()
                     continue
                 # DELETE order
                 elif om_user_input == 5:
-                    delete_order()
+                    delete_order(order_list)
                     update_saved_order()
                     continue
                 
@@ -218,6 +223,8 @@ if __name__ == '__main__':
                     update_courier = int(input('Input the index value of the courier: '))
                     update_courier -= 1
                     update_courier_list(update_courier)
+                    clear_screen()
+                    print('\t***Updated Courier***')
                     short_pause()
                     continue
 
@@ -232,7 +239,6 @@ if __name__ == '__main__':
                         continue
                     delete_couriers -= 1
                     delete_courier(delete_couriers)
-
                     continue
                 
                 #Not an integer

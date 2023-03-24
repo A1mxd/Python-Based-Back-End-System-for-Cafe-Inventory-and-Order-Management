@@ -1,1 +1,8 @@
-{"1": {"customer_name": "ahmed", "customer_address": "243 highstreet", "customer_phone": "09387373766", "status": "finished"}}
+[
+    {
+        "customer_name": "awddaw",
+        "customer_address": "wadadawdad",
+        "customer_phone": "23132121",
+        "status": "Preparing"
+    }
+]

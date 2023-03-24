@@ -15,7 +15,7 @@ product_list = [{"name": "Chocolate Brownie",
                 ]
 
 # order number with customer info dictionary
-order_list = {}
+order_list = []
 
 # courier list
 courier_list = []
@@ -24,8 +24,8 @@ courier_list = []
 no = 0
 
 # Open the clean new file for orders
-order_file =open('orders.txt', 'w+')
-order_file.close
+# order_file =open('orders.txt', 'w+')
+# order_file.close
 
 # # empty input checker for yes or no - delete option - TODO: try it out later
 # def empty_input_check(input):
@@ -45,7 +45,6 @@ order_file.close
 #                 break
 #         else :
 #             break
-
 #     return 
 
                             ##############  Extra helpful function Section ###################
@@ -157,14 +156,13 @@ def Courier_menu_function():
     except ValueError:
         cm_user_input = 999999
         return cm_user_input
-
+    
                                          ############## Product Section ###################
 def new_products(name, price):
     global product_list
     new_index = len(product_list)
     product_info = {"name": name,
-                    "price": price 
-    }
+                    "price": price }
     product_list.append(product_info)
     index= new_index + 1
     clear_screen()
@@ -284,34 +282,32 @@ def update_saved_product():
 
 
                                          ############## Order Section ###################
+
 def print_orders():
     global order_list
-    global key
-    for key, orders in order_list.items():
+    clear_screen()
+    for index, orders in enumerate(order_list):
+        index += 1
         name = orders['customer_name']
         status = orders['status']
         address = orders['customer_address']
         phone = orders['customer_phone']
-        print(f'Order Number: {key} - Name: {name}, address: {address}, Phone number: {phone}, Status: {status}')
+        print(f'Order Number: {index} - Name: {name}, address: {address}, Phone number: {phone}, Status: {status}')
 
-def new_order():
+def new_order(customer_name, customer_address, customer_phone):
     # print('\tAdding new order')
-    global no
     global order_val
-    order_number()
-    customer_name = input('Input your name: ')
-    customer_address = input('Input your address: ')
-    # TODO: need to make it 11 digit number
-    customer_phone = input('Input your phone number: ')
+    new_index = len(order_list)
     status = 'Preparing'
     order_val = {'customer_name': customer_name,
                 "customer_address": customer_address,
                 "customer_phone": customer_phone,
                 "status": status} 
-
-    order_list[no] = order_val
-    # customer_name = Customer()
-    # print(order_list)
+    order_list.append(order_val)
+    index= new_index + 1
+    clear_screen()
+    print(f'\t***Your Order number is {index}***')
+    short_pause()
     return
 
 def save_order():
@@ -329,30 +325,34 @@ def update_saved_order():
     orders_file.close()
     return
     
-def update_order_status():
+def update_order_status(order_list):
     clear_screen()
-    global order_list
-    #prints order number and status of the orders
-    for key, orders in order_list.items():
-        status = orders['status']
-        print(f'Order Number: {key}, Status: {status}')
     print('\t**Order Status***')
+    #prints order number and status of the orders
+    for index, orders in enumerate(order_list):
+        index += 1
+        status = orders['status']
+        print(f'Order Number: {index}, Status: {status}')
+
+    last_order = len(order_list) + 1
     Customers_order =int(input('\n\n\nInput your order number: '))
-    if  key >= Customers_order and not Customers_order <= 0:
+    if  last_order >= Customers_order and not Customers_order <= 0:
+        Customers_order -= 1
         update_status_input = str(input('Input the new status: '))
         order_list[Customers_order]['status']  = update_status_input
     else: 
         print(f'Invalid input')
-        print(f'The last order was {key}')
+        print(f'The last order was {last_order}')
     short_pause()
     return
 
-def update_order():
-    global order_list
+def update_order(order_list):
     #prints order number and name of the orders
     print_orders()
+    last_order = len(order_list) + 1
     Customers_order =int(input('Input your order number: '))
-    if  key >= Customers_order and not Customers_order <= 0:
+    if  last_order >= Customers_order and not Customers_order <= 0:
+        Customers_order -= 1
         clear_screen()
         print('\t***Update customer Information***')
         customer_input = int(input('(1) to change your name \
@@ -372,20 +372,21 @@ def update_order():
             print('Invalid Input')
     else: 
         print(f'Invalid input')
-        print(f'The last order is {key}')
+        print(f'The last order is {last_order}')
     short_pause()
     return
 
-def delete_order():
+def delete_order(order_list):
     global check_input
-    global order_list
     print_orders()
     check_input ='order'
     try:
+        last_order = len(order_list) + 1
         Customers_order =int(input('Input the order number to delete: '))
         confirm = confirmation()
         if confirm == 'y' or confirm == 'yes':
-            if  key >= Customers_order and not Customers_order <= 0:
+            Customers_order -= 1
+            if  last_order >= Customers_order and not Customers_order <= -1:
                 print('Deleting the product...')
                 short_pause()
                 del order_list[Customers_order]
@@ -393,7 +394,7 @@ def delete_order():
                 short_pause()
             else: 
                 print(f'Invalid input')
-                print(f'The last order was {key}')
+                print(f'The last order was {last_order}')
                 short_pause()
         elif confirm == 'n' or confirm == 'no':
             print('Cancelled the deletion...')
@@ -409,6 +410,7 @@ def delete_order():
         clear_screen()
         print('\t**Returning to order Menu**')
         short_pause()
+        return
     return
 
 
@@ -499,3 +501,16 @@ def delete_courier(delete_couriers):
         print('Invalid input')
         short_pause()
     
+def save_courier():
+    with open('couriers.json', 'w+') as couriers_file:
+        json.dump(courier_list, couriers_file, indent=4)
+        
+    couriers_file.close()
+    return
+
+def update_courier():
+    with open('couriers.json', 'w+') as couriers_file:
+        json.dump(courier_list, couriers_file, indent=4)
+        
+    couriers_file.close()
+    return   
