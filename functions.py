@@ -21,7 +21,7 @@ order_list = []
 courier_list = []
 
 
-no = 0
+# no = 0
 
 # Open the clean new file for orders
 # order_file =open('orders.txt', 'w+')
@@ -184,7 +184,7 @@ def print_index_products(product_list):
         index += 1
         name = products['name']
         price = products["price"]
-        print(f'Index Number: {index} -  Name: {name}, Price: {price:.2f}')
+        print(f'Index Number: {index} -  Name: {name}, Price: £{price:.2f}')
 
 #specific update name or price
 def customer_input_option():
@@ -264,7 +264,7 @@ def full_menu_product(product_list):
     for products in product_list:
         name = products['name']
         price = products["price"]
-        print(f'Name: {name}, Price: {price:.2f}')
+        print(f'Name: {name}, Price: £{price:.2f}')
 
 def save_product():
     with open('products.json', 'w+') as products_file:
@@ -412,7 +412,14 @@ def delete_order(order_list):
         short_pause()
         return
     return
-
+# included in the order dictionary
+# def product_list_chosen(product_list):
+#     while True:
+#         product_chosen = int(input('Input the product index'))
+#         product_chosen -= 1
+#         if
+#         elif:
+#     return
 
 
 
@@ -508,7 +515,7 @@ def save_courier():
     couriers_file.close()
     return
 
-def update_courier():
+def update_saved_courier():
     with open('couriers.json', 'w+') as couriers_file:
         json.dump(courier_list, couriers_file, indent=4)
         

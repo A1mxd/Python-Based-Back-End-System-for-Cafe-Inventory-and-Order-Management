@@ -6,9 +6,9 @@ from functions import *
      
 #order number variable start
 #order number (doesn't work in the function files cos of global)
-def order_number():
-    global no
-    no += 1
+# def order_number():
+#     global no
+#     no += 1
 
 # need to try for all the input ones 
 if __name__ == '__main__':
@@ -146,6 +146,8 @@ if __name__ == '__main__':
                     customer_address = input('Input your address: ')
                     # TODO: need to make it 11 digit number
                     customer_phone = input('Input your phone number: ')
+                    clear_screen()
+                    print_index_products(product_list)
                     new_order(customer_name, customer_address, customer_phone)
                     save_order()
                     clear_screen()
@@ -187,7 +189,7 @@ if __name__ == '__main__':
                     short_pause()
                     clear_screen()
                     continue
-
+        
         #TODO: need to start on the courier option
         elif m_user_input == 3:
             clear_screen()
@@ -213,6 +215,7 @@ if __name__ == '__main__':
                     courier_name = input('Input your name: ')
                     courier_number = int(input('Input the number: '))
                     new_courier(courier_name, courier_number)
+                    save_courier()
                     short_pause()
                     continue
 
@@ -223,6 +226,7 @@ if __name__ == '__main__':
                     update_courier = int(input('Input the index value of the courier: '))
                     update_courier -= 1
                     update_courier_list(update_courier)
+                    update_saved_courier()
                     clear_screen()
                     print('\t***Updated Courier***')
                     short_pause()
@@ -239,6 +243,7 @@ if __name__ == '__main__':
                         continue
                     delete_couriers -= 1
                     delete_courier(delete_couriers)
+                    update_saved_courier()
                     continue
                 
                 #Not an integer
