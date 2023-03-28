@@ -1,8 +1,10 @@
 [
     {
-        "customer_name": "awddaw",
-        "customer_address": "wadadawdad",
-        "customer_phone": "23132121",
-        "status": "Preparing"
+        "customer_name": "adawdad",
+        "customer_address": "dawdda",
+        "courier_index": 2,
+        "customer_phone": "31313120",
+        "status": "Preparing",
+        "items": "1, 2"
     }
 ]

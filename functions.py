@@ -158,6 +158,7 @@ def Courier_menu_function():
         return cm_user_input
     
                                          ############## Product Section ###################
+
 def new_products(name, price):
     global product_list
     new_index = len(product_list)
@@ -203,6 +204,9 @@ def update_product(index_user_input):
     customer_input = customer_input_option()
     if customer_input == 1:
         update_product_name = str(input('\nInput the new product name: '))
+        if update_product_name == '':
+            invalid_input()
+            return
         old_product['name'] = update_product_name
     elif customer_input == 2:
         try:
@@ -213,6 +217,9 @@ def update_product(index_user_input):
         old_product['price']  = update_product_price
     elif customer_input == 3:
         update_product_name = str(input('\nInput the new product name: '))
+        if update_product_name == '':
+            invalid_input()
+            return
         old_product['name'] = update_product_name
         try:
             update_product_price = float(input('\nInput the new product price: £'))
@@ -292,7 +299,9 @@ def print_orders():
         status = orders['status']
         address = orders['customer_address']
         phone = orders['customer_phone']
-        print(f'Order Number: {index} - Name: {name}, address: {address}, Phone number: {phone}, Status: {status}')
+        courier = orders['courier_index']
+        items = orders['items']
+        print(f'Order Number: {index} - Name: {name}, address: {address}, Phone number: {phone}, Courier number: {courier}, Status: {status}, items: {items}')
 
 def new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen):
     # print('\tAdding new order')
@@ -341,6 +350,9 @@ def update_order_status(order_list):
     if  last_order >= Customers_order and not Customers_order <= 0:
         Customers_order -= 1
         update_status_input = str(input('Input the new status: '))
+        if update_status_input == '':
+            invalid_input()
+            return
         order_list[Customers_order]['status']  = update_status_input
     else: 
         print(f'Invalid input')
@@ -363,12 +375,21 @@ def update_order(order_list):
                                 \nType the number:'))
         if customer_input == 1:
             update_name_input = str(input('Input the new name: '))
+            if update_name_input == '':
+                invalid_input()
+                return
             order_list[Customers_order]['customer_name']  = update_name_input
         elif customer_input == 2:
             update_address_input = str(input('Input the new address: '))
+            if update_address_input == '':
+                invalid_input()
+                return
             order_list[Customers_order]['customer_address']  = update_address_input
         elif customer_input == 3:
             update_number_input = input('Input the new number: ')
+            if update_number_input == '':
+                invalid_input()
+                return
             order_list[Customers_order]['customer_phone']  = update_number_input
         else:
             print('Invalid Input')
@@ -414,17 +435,6 @@ def delete_order(order_list):
         short_pause()
         return
     return
-# included in the order dictionary
-# def items_chosen(product_list):
-#     try:
-#         while True:
-#             product_chosen = int(input('\nInput the product index: '))
-#             product_chosen -= 1
-#             if 
-#             elif:
-#     except:
-#     return
-
 
 
                                      ############## Courier Section ###################

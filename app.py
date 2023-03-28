@@ -58,7 +58,6 @@ if __name__ == '__main__':
                 # UPDATE existing product
                 elif pm_user_input == 3:
                     clear_screen()
-                    # cafe_products = cafe_product.keys()
                     print_index_products(product_list)
                     try:
                         index_user_input = int(input('\nInput the index value of the product: '))
@@ -140,7 +139,6 @@ if __name__ == '__main__':
                 # New order
                 elif om_user_input == 2:
                     clear_screen()
-                    order_number()
                     print('\t***Input New Order***')
                     customer_name = input('Input your name: ')
                     customer_address = input('Input your address: ')
@@ -166,11 +164,6 @@ if __name__ == '__main__':
                     continue
 
                 elif om_user_input == 3:
-                    update_order_status(order_list)
-                    update_saved_order()
-                    continue
-
-                elif om_user_input == 3:
                     update_order(order_list)
                     update_saved_order()
                     continue
@@ -179,6 +172,7 @@ if __name__ == '__main__':
                     update_order(order_list)
                     update_saved_order()
                     continue
+                
                 # DELETE order
                 elif om_user_input == 5:
                     delete_order(order_list)
@@ -223,7 +217,7 @@ if __name__ == '__main__':
                 elif cm_user_input == 2:
                     clear_screen()
                     courier_name = input('Input your name: ')
-                    courier_number = int(input('Input the number: '))
+                    courier_number = input('Input the number: ')
                     new_courier(courier_name, courier_number)
                     save_courier()
                     short_pause()
