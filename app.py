@@ -13,7 +13,7 @@ from functions import *
 # need to try for all the input ones 
 if __name__ == '__main__':
     
-#TODO: 
+#TODO: need to do options in string rather than integer for less errors and problem if i am not using it or to store 
 # Main Menu #
     while True:
         clear_screen()
@@ -147,8 +147,18 @@ if __name__ == '__main__':
                     # TODO: need to make it 11 digit number
                     customer_phone = input('Input your phone number: ')
                     clear_screen()
+                    print()
                     print_index_products(product_list)
-                    new_order(customer_name, customer_address, customer_phone)
+                    items_chosen = input('Input all the product items index with comma separating (eg. 3, 2, 1) \
+                                         \n\nInput the product index: ')
+                    clear_screen()
+                    print_courier_list()
+                    try:
+                        courier_index = int(input(f'Input the courier index: '))
+                    except ValueError:
+                        value_error()
+                        continue
+                    new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen)
                     save_order()
                     clear_screen()
                     print_orders()
@@ -190,7 +200,7 @@ if __name__ == '__main__':
                     clear_screen()
                     continue
         
-        #TODO: need to start on the courier option
+
         elif m_user_input == 3:
             clear_screen()
             while True:

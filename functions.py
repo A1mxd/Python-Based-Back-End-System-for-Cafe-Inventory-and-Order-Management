@@ -294,15 +294,17 @@ def print_orders():
         phone = orders['customer_phone']
         print(f'Order Number: {index} - Name: {name}, address: {address}, Phone number: {phone}, Status: {status}')
 
-def new_order(customer_name, customer_address, customer_phone):
+def new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen):
     # print('\tAdding new order')
     global order_val
     new_index = len(order_list)
     status = 'Preparing'
     order_val = {'customer_name': customer_name,
                 "customer_address": customer_address,
+                "courier_index": courier_index,
                 "customer_phone": customer_phone,
-                "status": status} 
+                "status": status,
+                "items": items_chosen} 
     order_list.append(order_val)
     index= new_index + 1
     clear_screen()
@@ -413,12 +415,14 @@ def delete_order(order_list):
         return
     return
 # included in the order dictionary
-# def product_list_chosen(product_list):
-#     while True:
-#         product_chosen = int(input('Input the product index'))
-#         product_chosen -= 1
-#         if
-#         elif:
+# def items_chosen(product_list):
+#     try:
+#         while True:
+#             product_chosen = int(input('\nInput the product index: '))
+#             product_chosen -= 1
+#             if 
+#             elif:
+#     except:
 #     return
 
 
@@ -438,10 +442,10 @@ def print_courier_list():
 def new_courier(courier_name, courier_number):
     global courier_list
     new_index = len(courier_list)
-    
+
     courier_info = {'courier_name': courier_name,
                 "courier_number": courier_number
-                }
+                    }
 
     courier_list.append(courier_info)
     index = new_index + 1
