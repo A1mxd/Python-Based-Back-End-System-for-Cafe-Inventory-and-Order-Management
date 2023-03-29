@@ -162,10 +162,11 @@ def Courier_menu_function():
 def new_products(name, price):
     global product_list
     new_index = len(product_list)
-    product_info = {"name": name,
+    index= new_index + 1
+    product_info = {"id": index,
+                    "name": name,
                     "price": price }
     product_list.append(product_info)
-    index= new_index + 1
     clear_screen()
     print(f'\t***Product number: {index}***')
     short_pause()
@@ -452,13 +453,14 @@ def print_courier_list():
 def new_courier(courier_name, courier_number):
     global courier_list
     new_index = len(courier_list)
-
-    courier_info = {'courier_name': courier_name,
-                "courier_number": courier_number
+    index = new_index + 1
+    courier_info = {"id": index,
+                    'courier_name': courier_name,
+                    "courier_number": courier_number
                     }
 
     courier_list.append(courier_info)
-    index = new_index + 1
+    
     clear_screen()
     print(f'\t***Courier number {index}***')
     return
