@@ -3,7 +3,7 @@ import csv
 import json
 
 from functions import * 
-     
+from db_app import *    
 #order number variable start
 #order number (doesn't work in the function files cos of global)
 # def order_number():
@@ -49,7 +49,9 @@ if __name__ == '__main__':
                         print('\t***Invalid price inputted***')
                         short_pause()
                         continue
+                    #todo
                     new_products(new_product, new_price)
+                    save_product_db(product_list, new_product, new_price)
                     save_product()
                     print_products(product_list)
                     short_pause()
