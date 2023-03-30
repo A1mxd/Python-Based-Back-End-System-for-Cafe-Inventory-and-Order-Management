@@ -9,91 +9,140 @@ database_name = os.environ.get("mysql_db")
 user_name = os.environ.get("mysql_user")
 user_password = os.environ.get("mysql_pass")
 
-def save_product_db(product_list, new_product, new_price):
+# todo the update and load and delete in my functions and app properly
+# todo this function
+# def get_connection():
+
+
+def new_product_db(new_product, new_price):
     try:
-        # TODO Establish a database connection
-        # Hint: use "with ..."
         with pymysql.connect(
             host = host_name, database = database_name,
             user = user_name, password = user_password
             ) as connection:
 
-            # TODO open a cursor
             cursor = connection.cursor()
 
-
-
-            # TODO Add code here to insert a new record
             sql = """
-                INSERT INTO `product` (`name`, `price`)
-                VALUES (%s, %s,)
+                INSERT INTO product (product_name, product_price)
+                VALUES (%s, %s);
                 """
-            data_values = (new_product, new_price)
+            product_values = (new_product, new_price)
 
-            cursor.execute(sql, data_values)
+            cursor.execute(sql, product_values)
             connection.commit()
+            cursor.execute('SELECT product_id FROM product')
 
-
-            # TODO Add code here to select all the records
-            cursor.execute('SELECT product_id, name, price FROM person ORDER BY person_id ASC')
             rows = cursor.fetchall()
-
-
-            for row in rows:
-                print(f'product_id: {str(row[0])}, name: {row[1]}, price: {row[2]}')
-
-
-            # TODO close the cursor
+            product_number = rows[-1][0]
             cursor.close()
-
-
-
-        # The connection will automatically close here
+            return product_number
     except Exception as ex:
         print('Failed to open connection', ex)
 
-def update_product_db(product_list, new_product, new_price):
+def load_product_db():
     try:
-        # TODO Establish a database connection
-        # Hint: use "with ..."
         with pymysql.connect(
-            host = host_name, database = database_name,
-            user = user_name, password = user_password
+            host = host_name , database = database_name,
+            user = user_name , password = user_password
             ) as connection:
+    
+            cursor = connection.cursor()
 
+            cursor.execute('SELECT product_id, product_name, product_price FROM product ORDER BY product_id ASC')
 
+            rows = cursor.fetchall()
+            cursor.close()
+            return rows
+    except Exception as ex:
+        print('Failed to open connection', ex)
+
+def update_product_both_db(product_id, product_name, product_price):
+    try:
+        with pymysql.connect(
+            host = host_name , database = database_name,
+            user = user_name , password = user_password
+            ) as connection:
+    
+            cursor = connection.cursor()
+
+            sql = """
+                UPDATE product SET product_name = %s, product_price = %s WHERE product_id = %s;
+                """
+            product_values = (product_name, product_price, product_id)
             
-            # TODO open a cursor
-            cursor = connection.cursor()
-
-
-
-            # TODO Add code here to insert a new record
-            sql = """
-                INSERT INTO `product` (`name`, `price`)
-                VALUES (%s, %s,)
-                """
-            data_values = (new_product, new_price)
-
-            cursor.execute(sql, data_values)
+            cursor.execute(sql, product_values)
             connection.commit()
-
-
-
-            # TODO Add code here to select all the records
-            cursor.execute('SELECT product_id, name, price FROM person ORDER BY person_id ASC')
-            rows = cursor.fetchall()
-
-
-            for row in rows:
-                print(f'product_id: {str(row[0])}, name: {row[1]}, price: {row[2]}')
-
-
-            # TODO close the cursor
             cursor.close()
-
-
-
-        # The connection will automatically close here
     except Exception as ex:
         print('Failed to open connection', ex)
+
+def update_product_name_db(product_id, product_name):
+    try:
+        with pymysql.connect(
+            host = host_name , database = database_name,
+            user = user_name , password = user_password
+            ) as connection:
+    
+            cursor = connection.cursor()
+
+            sql = """
+                UPDATE product SET product_name = %s WHERE product_id = %s;
+                """
+            product_values = (product_name, product_id)
+            
+            cursor.execute(sql, product_values)
+            connection.commit()
+            cursor.close()
+    except Exception as ex:
+        print('Failed to open connection', ex)
+
+def update_product_price_db(product_id, product_price):
+    try:
+        with pymysql.connect(
+            host = host_name , database = database_name,
+            user = user_name , password = user_password
+            ) as connection:
+    
+            cursor = connection.cursor()
+
+            sql = """
+                UPDATE product SET product_price = %s WHERE product_id = %s;
+                """
+            product_values = (product_price, product_id)
+            
+            cursor.execute(sql, product_values)
+            connection.commit()
+            cursor.close()
+    except Exception as ex:
+        print('Failed to open connection', ex)
+
+def delete_product_db(product_id):
+    try:
+        with pymysql.connect(
+            host = host_name , database = database_name,
+            user = user_name , password = user_password
+            ) as connection:
+    
+            cursor = connection.cursor()
+
+            sql = """
+                DELETE FROM product WHERE product_id = %s;
+                """
+            product_values = (product_id)
+            
+            cursor.execute(sql, product_values)
+            connection.commit()
+            cursor.close()
+    except Exception as ex:
+        print('Failed to open connection', ex)
+
+
+# def load_from_db():
+
+
+# def print_menu(product_list):
+
+#     for row in product_list:
+#         print(f'product_id: {str(product[0])}, name: {row[1]}, price: £{row[2]}')
+

@@ -2,6 +2,7 @@ import os
 import time
 import csv
 import json
+from db_app import *
 # Beginning cafe menu #
 # Product list storage
 product_list = [{"name": "Chocolate Brownie",
@@ -96,6 +97,12 @@ def confirmation():
     return confirm
 
                                      ############## Menu Input ###################
+# get integer input
+def get_int_input(text_inputs, num_options):
+    while True:
+        break
+    return
+
 # Main menu input
 def Main_menu_user_input():
     print('\t***Main Menu options***')
@@ -132,7 +139,7 @@ def Order_menu_function():
     try:
         om_user_input =  int(input('(0) to return to main menu \
                                 \n(1) to print order \
-                                \n(2) to order \
+                                \n(2) to create new order \
                                 \n(3) to update existing order status \
                                 \n(4) to update existing order \
                                 \n(5) to delete order \n\n\n\
@@ -160,13 +167,14 @@ def Courier_menu_function():
                                          ############## Product Section ###################
 
 def new_products(name, price):
-    global product_list
-    new_index = len(product_list)
-    index= new_index + 1
-    product_info = {"id": index,
-                    "name": name,
-                    "price": price }
-    product_list.append(product_info)
+    # global product_list
+    # new_index = len(product_list)
+    # index= new_index + 1
+    # product_info = {"id": index,
+    #                 "name": name,
+    #                 "price": price }
+    # product_list.append(product_info)
+    index =new_product_db(name, price)
     clear_screen()
     print(f'\t***Product number: {index}***')
     short_pause()
@@ -175,18 +183,22 @@ def new_products(name, price):
 # Print products    
 def print_products(product_list):
     clear_screen()
+
     print('\t***List of products in the menu***')
     for products in product_list:
-        print(products['name'])
+        print(products[1])
 
 #print products with index
 def print_index_products(product_list):
     print('\t***Product List***')
-    for index, products in enumerate(product_list):
-        index += 1
-        name = products['name']
-        price = products["price"]
-        print(f'Index Number: {index} -  Name: {name}, Price: £{price:.2f}')
+    # for index, products in enumerate(product_list):
+    #     index += 1
+    #     name = products['name']
+    #     price = products["price"]
+    #     print(f'Index Number: {index} -  Name: {name}, Price: £{price:.2f}')
+    
+    for product in product_list:
+        print(f'Product_id: {str(product[0])}, name: {product[1]}, price: {product[2]}')
 
 #specific update name or price
 def customer_input_option():

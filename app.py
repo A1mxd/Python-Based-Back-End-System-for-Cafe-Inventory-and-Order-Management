@@ -33,6 +33,7 @@ if __name__ == '__main__':
                 elif pm_user_input == 1:
                     clear_screen()
                     save_product()
+                    product_list = load_product_db()
                     print_products(product_list)
                     short_pause()
                     continue
@@ -51,8 +52,9 @@ if __name__ == '__main__':
                         continue
                     #todo
                     new_products(new_product, new_price)
-                    save_product_db(product_list, new_product, new_price)
+                    # save_product_db(product_list, new_product, new_price)
                     save_product()
+                    product_list = load_product_db()
                     print_products(product_list)
                     short_pause()
                     continue
@@ -60,6 +62,7 @@ if __name__ == '__main__':
                 # UPDATE existing product
                 elif pm_user_input == 3:
                     clear_screen()
+                    product_list = load_product_db()
                     print_index_products(product_list)
                     try:
                         index_user_input = int(input('\nInput the index value of the product: '))
