@@ -138,7 +138,6 @@ def delete_product_db(product_id):
         print('Failed to open connection', ex)
 
 
-# def load_from_db():
 
 
 # def print_menu(product_list):
