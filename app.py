@@ -4,11 +4,7 @@ import json
 
 from functions import * 
 from db_app import *    
-#order number variable start
-#order number (doesn't work in the function files cos of global)
-# def order_number():
-#     global no
-#     no += 1
+
 
 # need to try for all the input ones 
 if __name__ == '__main__':
@@ -36,7 +32,7 @@ if __name__ == '__main__':
                     print_products(product_list)
                     if product_list == None:
                         continue
-                    save_product(product_list)
+                    # save_product(product_list)
                     short_pause()
                     continue
 
@@ -55,7 +51,7 @@ if __name__ == '__main__':
                     #todo
                     new_products(new_product, new_price)
                     # save_product_db(product_list, new_product, new_price)
-                    save_product(product_list)
+                    # save_product(product_list)
                     product_list = load_product_db()
                     print_products(product_list)
                     short_pause()
@@ -77,7 +73,7 @@ if __name__ == '__main__':
                                 value_error()
                                 continue
                             product_list = load_product_db()
-                            update_saved_product(product_list)
+                            # update_saved_product(product_list)
                             short_pause()
                             clear_screen()
                             full_menu_product(product_list)
@@ -113,7 +109,7 @@ if __name__ == '__main__':
                     full_menu_product(product_list)
                     if product_list == None:
                         continue
-                    save_product(product_list)
+                    # save_product(product_list)
                     short_pause()
                     continue
 
@@ -147,7 +143,7 @@ if __name__ == '__main__':
 
                 # Print orders
                 elif om_user_input == 1:
-                    print_orders()
+                    print_orders(order_list)
                     long_pause()
                     continue
 
@@ -160,40 +156,43 @@ if __name__ == '__main__':
                     # TODO: need to make it 11 digit number
                     customer_phone = input('Input your phone number: ')
                     clear_screen()
-                    print()
                     product_list=load_product_db()
                     print_index_products(product_list)
+                    if product_list == None:
+                        continue
                     items_chosen = input('Input all the product items index with comma separating (eg. 3, 2, 1) \
                                          \n\nInput the product index: ')
                     clear_screen()
                     courier_list = load_courier_db()
                     print_courier_list(courier_list)
+                    if courier_list == None:
+                        continue
                     try:
                         courier_index = int(input(f'\nInput the courier index: '))
                     except ValueError:
                         value_error()
                         continue
                     new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen)
-                    save_order()
+                    save_order(order_list)
                     clear_screen()
-                    print_orders()
+                    print_orders(order_list)
                     long_pause()
                     continue
 
                 elif om_user_input == 3:
                     update_order_status(order_list)
-                    update_saved_order()
+                    update_saved_order(order_list)
                     continue
 
                 elif om_user_input == 4:
                     update_order(order_list)
-                    update_saved_order()
+                    update_saved_order(order_list)
                     continue
                 
                 # DELETE order
                 elif om_user_input == 5:
                     delete_order(order_list)
-                    update_saved_order()
+                    update_saved_order(order_list)
                     continue
                 
                 #Not an integer

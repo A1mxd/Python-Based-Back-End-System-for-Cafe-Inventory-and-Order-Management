@@ -5,6 +5,7 @@ import json
 from db_app import *
 
 # Beginning cafe menu #
+
 # Product list storage
 # product_list = [{"name": "Chocolate Brownie",
 #                 "price": 5.95},
@@ -19,11 +20,6 @@ from db_app import *
 # order number with customer info dictionary
 order_list = []
 
-# courier list
-# courier_list = []
-
-
-# no = 0
 
 # Open the clean new file for orders
 # order_file =open('orders.txt', 'w+')
@@ -300,10 +296,15 @@ def update_saved_product(product_list):
 
                                          ############## Order Section ###################
 
-def print_orders():
-    global order_list
+def print_orders(order_list):
     clear_screen()
     print('\t***List of Orders***')
+    if order_list == []:
+        clear_screen()
+        print('\t***No orders to show***')
+        short_pause()
+        clear_screen()
+        return
     for index, orders in enumerate(order_list):
         index += 1
         name = orders['customer_name']
@@ -315,7 +316,6 @@ def print_orders():
         print(f'Order Number: {index} - Name: {name}, address: {address}, Phone number: {phone}, Courier number: {courier}, Status: {status}, items: {items}')
 
 def new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen):
-    # print('\tAdding new order')
     global order_val
     new_index = len(order_list)
     status = 'Preparing'
@@ -332,15 +332,14 @@ def new_order(customer_name, customer_address, customer_phone, courier_index, it
     short_pause()
     return
 
-def save_order():
+def save_order(order_list):
         with open('orders.json', 'w+') as orders_file:
             json.dump(order_list, orders_file, indent=4)
             
         orders_file.close()
-
         return
 
-def update_saved_order():
+def update_saved_order(order_list):
     with open('orders.json', 'w+') as orders_file:
         json.dump(order_list, orders_file, indent=4)
         
@@ -492,7 +491,6 @@ def new_courier(courier_name, courier_number):
 def update_courier_list(courier_index):
     courier_list = load_courier_db()
     clear_screen()
-    # courier = courier_list(courier_index)
     if courier_list == None:
         clear_screen()
         print('\t***No couriers found in database***')
@@ -512,7 +510,6 @@ def update_courier_list(courier_index):
                 invalid_input()
                 return
             update_courier_name = str(input('\nInput the new product name: '))
-            # courier_list[courier_index]['courier_name'] = update_courier_name
             update_courier_name_db(courier_index, update_courier_name)
         elif courier_input == 2:
             if update_courier_name == '':
@@ -523,20 +520,17 @@ def update_courier_list(courier_index):
             except ValueError:
                 value_error()
                 return
-            # courier_list[courier_index]['courier_number'] = update_courier_number
             update_courier_name_db(courier_index, update_courier_number)
         elif courier_input == 3:
             if update_courier_name == '':
                 invalid_input()
                 return
             update_courier_name = str(input('\nInput the new product name: '))
-            # courier_list[courier_index]['courier_name'] = update_courier_name
             try:
                 update_courier_number = int(input('\nInput the new courier number: '))
             except ValueError:
                 value_error()
                 return
-            # courier_list[courier_index]['courier_number'] = update_courier_number
             update_courier_both_db(courier_index, update_courier_name, update_courier_number)
         else:
             return print('Invalid Input')

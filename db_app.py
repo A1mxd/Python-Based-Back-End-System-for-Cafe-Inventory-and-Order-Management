@@ -95,7 +95,8 @@ def update_product_both_db(product_id, product_name, product_price):
             cursor.close()
     except Exception as ex:
         print('Failed to open connection', ex)
-
+        
+#todo try find the row 1 error
 def update_product_name_db(product_id, product_name):
     try:
         with pymysql.connect(
