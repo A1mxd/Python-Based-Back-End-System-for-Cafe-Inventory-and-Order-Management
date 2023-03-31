@@ -32,9 +32,11 @@ if __name__ == '__main__':
 
                 elif pm_user_input == 1:
                     clear_screen()
-                    save_product()
                     product_list = load_product_db()
                     print_products(product_list)
+                    if product_list == None:
+                        continue
+                    save_product(product_list)
                     short_pause()
                     continue
 
@@ -53,7 +55,7 @@ if __name__ == '__main__':
                     #todo
                     new_products(new_product, new_price)
                     # save_product_db(product_list, new_product, new_price)
-                    save_product()
+                    save_product(product_list)
                     product_list = load_product_db()
                     print_products(product_list)
                     short_pause()
@@ -64,15 +66,18 @@ if __name__ == '__main__':
                     clear_screen()
                     product_list = load_product_db()
                     print_index_products(product_list)
+                    if product_list == None:
+                        continue
                     try:
                         index_user_input = int(input('\nInput the index value of the product: '))
-                        if index_user_input <= len(product_list) and not index_user_input<= 0:  
+                        if index_user_input <= product_list[-1][0] and not index_user_input<= 0:  
                             try:
                                 update_product(index_user_input)
                             except ValueError:
                                 value_error()
                                 continue
-                            update_saved_product()
+                            product_list = load_product_db()
+                            update_saved_product(product_list)
                             short_pause()
                             clear_screen()
                             full_menu_product(product_list)
@@ -88,22 +93,27 @@ if __name__ == '__main__':
                 # DELETE product
                 elif pm_user_input == 4:
                     clear_screen()
+                    product_list = load_product_db()
                     print_index_products(product_list)
+                    if product_list == None:
+                        continue
                     try:
                         delete_products = int(input('\n\nInput the index value of the product to delete: '))
                     except ValueError:
                         value_error()
                         continue
-                    delete_products -= 1
-                    delete_product(delete_products)
-                    update_saved_product()
+                    delete_product(product_list, delete_products)
+                    # update_saved_product(product_list)
                     continue
 
                 # Full menu with prices
                 elif pm_user_input == 5:
                     clear_screen()
-                    save_product()
+                    product_list = load_product_db()
                     full_menu_product(product_list)
+                    if product_list == None:
+                        continue
+                    save_product(product_list)
                     short_pause()
                     continue
 
@@ -151,13 +161,15 @@ if __name__ == '__main__':
                     customer_phone = input('Input your phone number: ')
                     clear_screen()
                     print()
+                    product_list=load_product_db()
                     print_index_products(product_list)
                     items_chosen = input('Input all the product items index with comma separating (eg. 3, 2, 1) \
                                          \n\nInput the product index: ')
                     clear_screen()
-                    print_courier_list()
+                    courier_list = load_courier_db()
+                    print_courier_list(courier_list)
                     try:
-                        courier_index = int(input(f'Input the courier index: '))
+                        courier_index = int(input(f'\nInput the courier index: '))
                     except ValueError:
                         value_error()
                         continue
@@ -169,7 +181,7 @@ if __name__ == '__main__':
                     continue
 
                 elif om_user_input == 3:
-                    update_order(order_list)
+                    update_order_status(order_list)
                     update_saved_order()
                     continue
 
@@ -213,29 +225,37 @@ if __name__ == '__main__':
                 # PRINT couriers list
                 elif cm_user_input == 1:
                     clear_screen()
+                    courier_list = load_courier_db()
+                    if courier_list == None:
+                        print_courier_list(courier_list)
+                        continue
                     print('\t***Courier List***')
-                    print_courier_list()
+                    print_courier_list(courier_list)
                     short_pause()
                     continue
 
                 # CREATE new courier
                 elif cm_user_input == 2:
                     clear_screen()
+                    print('\t***Input New Courier***')
                     courier_name = input('Input your name: ')
                     courier_number = input('Input the number: ')
                     new_courier(courier_name, courier_number)
-                    save_courier()
+                    courier_list = load_courier_db()
+                    save_courier(courier_list)
                     short_pause()
                     continue
 
                 # UPDATE existing courier
                 elif cm_user_input == 3:
                     clear_screen()
-                    print_courier_list()
+                    courier_list = load_courier_db()
+                    print_courier_list(courier_list)
+                    if courier_list == None:
+                        continue
                     update_courier = int(input('Input the index value of the courier: '))
-                    update_courier -= 1
                     update_courier_list(update_courier)
-                    update_saved_courier()
+                    update_saved_courier(courier_list)
                     clear_screen()
                     print('\t***Updated Courier***')
                     short_pause()
@@ -244,15 +264,17 @@ if __name__ == '__main__':
                 # DELETE courier
                 elif cm_user_input == 4:
                     clear_screen()
-                    print_courier_list()
+                    courier_list = load_courier_db()
+                    print_courier_list(courier_list)
+                    if courier_list == None:
+                        continue
                     try:
                         delete_couriers = int(input('\n\nInput the index value of the courier to delete: '))
                     except ValueError:
                         value_error()
                         continue
-                    delete_couriers -= 1
-                    delete_courier(delete_couriers)
-                    update_saved_courier()
+                    delete_courier(courier_list, delete_couriers)
+                    update_saved_courier(courier_list)
                     continue
                 
                 #Not an integer
