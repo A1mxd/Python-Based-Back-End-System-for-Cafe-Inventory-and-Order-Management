@@ -160,9 +160,12 @@ def print_products(product_list):
         short_pause()
         clear_screen()
         return
-    print('\t***List of products in the menu***')
+    # print('\t***List of products in the menu***')
+    # for products in product_list:
+    #     print(products[1])
+    
     for products in product_list:
-        print(products[1])
+        print(products['name'])
 
 #print products with index
 def print_index_products(product_list):
@@ -175,6 +178,14 @@ def print_index_products(product_list):
     print('\t***Product List***')
     for product in product_list:
         print(f'Product_id: {str(product[0])}, name: {product[1]}, price: {product[2]}')
+
+    # for products in product_list:
+    #     product_id = products['product_id']
+    #     name = products['name']
+    #     price = products["price"]
+    #     print(f'Index Number: {index} -  Name: {name}, Price: £{price:.2f}')
+    
+
 
 #specific update name or price
 def customer_input_option():
@@ -208,6 +219,7 @@ def update_product(product_id):
             value_error()
             return
         update_product_price_db(product_id, update_product_price)
+
     elif customer_input == 3:
         update_product_name = str(input('\nInput the new product name: '))
         if update_product_name == '':
@@ -233,7 +245,7 @@ def delete_product(product_list, delete_products):
         return
     confirm = confirmation()
     if confirm == 'y' or confirm == 'yes':
-        if  product_list[-1][0] >= delete_products and not delete_products <= 0:
+        if  product_list[-1]['product_id'] >= delete_products and not delete_products <= 0:
             print('Deleting the product...')
             short_pause()
             last_delete =delete_product_db(delete_products)
@@ -246,7 +258,7 @@ def delete_product(product_list, delete_products):
                 clear_screen()
                 return
         else: 
-            if product_list[-1][0] == 0:
+            if product_list[-1]['product_id'] == 0:
                 clear_screen()
                 print('No product to delete')
                 short_pause()
@@ -254,7 +266,7 @@ def delete_product(product_list, delete_products):
             else:
                 clear_screen()
                 print('Invalid input')
-                print(f'The last product was {product_list[-1][0]}')
+                print(f'The last product was {product_list[-1]["product_id"]}')
                 short_pause()
                 return
     elif confirm == 'n' or confirm == 'no':
@@ -477,8 +489,13 @@ def print_courier_list(courier_list):
         short_pause()
         clear_screen()
         return 
+    # for courier in courier_list:
+    #     print(f'Product_id: {str(courier[0])}, name: {courier[1]}, price: {courier[2]}')
     for courier in courier_list:
-        print(f'Product_id: {str(courier[0])}, name: {courier[1]}, price: {courier[2]}')
+        index = courier['courier_id']
+        name = courier['courier_name']
+        number = courier["courier_number"]
+        print(f'Courier number : {index} - Name: {name}, Number: {number}')
     
 
 def new_courier(courier_name, courier_number):

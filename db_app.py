@@ -14,17 +14,37 @@ user_password = os.environ.get("mysql_pass")
 # todo this function
 # current_connection = None
 
-def get_connection():
-    if current_connection == None:
-        current_connection = pymysql.connect( 
-        host = host_name, database = database_name,
-        user = user_name, password = user_password )
-        return current_connection
+# def get_connection():
+#     global current_connection
+#     if current_connection == None:
+#         current_connection = pymysql.connect( 
+#         host = host_name, database = database_name,
+#         user = user_name, password = user_password )
+#         return current_connection
 
-def close_connection(current_connection):
-    if current_connection is not None:
-        current_connection.close()
-        current_connection = None
+# def close_connection():
+#     global current_connection
+#     if current_connection:
+#         current_connection.close()
+#         current_connection = None
+# def get_connection():
+#     global current_connection
+#     # Optional print statements
+#     if current_connection:
+#         print('connection already running')
+#     else:
+#         print('new connection starting')
+#     if current_connection == None:
+#         current_connection = pymysql.connect(host=host_name, database=database_name,
+#                                              user=user_name, password=user_password)
+    
+#     return current_connection
+
+
+# def close_connection():
+#     if current_connection:
+#         current_connection.close()
+#         print('Connection closed')
         
 
                                          ############## Product Section ###################
@@ -35,9 +55,9 @@ def new_product_db(new_product, new_price):
             host = host_name, database = database_name,
             user = user_name, password = user_password
             ) as connection:
-
             cursor = connection.cursor()
-            print
+
+            
             sql = """
                 INSERT INTO product (product_name, product_price)
                 VALUES (%s, %s);
@@ -55,34 +75,44 @@ def new_product_db(new_product, new_price):
         
     except Exception as ex:
         print('Failed to open connection', ex)
+    # finally:
+    #     close_connection()
         
 
 def load_product_db():
     try:
         with pymysql.connect(
-            host = host_name , database = database_name,
-            user = user_name , password = user_password
+            host = host_name, database = database_name,
+            user = user_name, password = user_password
             ) as connection:
-    
             cursor = connection.cursor()
- 
+            
             cursor.execute('SELECT product_id, product_name, product_price FROM product ORDER BY product_id ASC')
 
             rows = cursor.fetchall()
             cursor.close()
+            print(rows)
             if not rows:
                 return
+            # product_list = []
+            # for product in rows:
+            #     product_info = {'product_id': rows[0],
+            #                     "name": rows[1],
+            #                     "price": rows[2]}
+            #     product_list.append(product_info)
             return rows
     except Exception as ex:
         print('Failed to open connection', ex)
+        time.sleep(4)
+    # finally:
+    #     close_connection()
 
 def update_product_both_db(product_id, product_name, product_price):
     try:
         with pymysql.connect(
-            host = host_name , database = database_name,
-            user = user_name , password = user_password
+            host = host_name, database = database_name,
+            user = user_name, password = user_password
             ) as connection:
-    
             cursor = connection.cursor()
 
             sql = """
@@ -95,15 +125,16 @@ def update_product_both_db(product_id, product_name, product_price):
             cursor.close()
     except Exception as ex:
         print('Failed to open connection', ex)
+    # finally:
+    #     close_connection()
         
 #todo try find the row 1 error
 def update_product_name_db(product_id, product_name):
     try:
         with pymysql.connect(
-            host = host_name , database = database_name,
-            user = user_name , password = user_password
+            host = host_name, database = database_name,
+            user = user_name, password = user_password
             ) as connection:
-    
             cursor = connection.cursor()
 
             sql = """
@@ -116,14 +147,15 @@ def update_product_name_db(product_id, product_name):
             cursor.close()
     except Exception as ex:
         print('Failed to open connection', ex)
+    # finally:
+    #     close_connection()
 
 def update_product_price_db(product_id, product_price):
     try:
         with pymysql.connect(
-            host = host_name , database = database_name,
-            user = user_name , password = user_password
+            host = host_name, database = database_name,
+            user = user_name, password = user_password
             ) as connection:
-    
             cursor = connection.cursor()
 
             sql = """
@@ -136,14 +168,16 @@ def update_product_price_db(product_id, product_price):
             cursor.close()
     except Exception as ex:
         print('Failed to open connection', ex)
+    # finally:
+    #     close_connection()
+
 
 def delete_product_db(product_id):
     try:
         with pymysql.connect(
-            host = host_name , database = database_name,
-            user = user_name , password = user_password
+            host = host_name, database = database_name,
+            user = user_name, password = user_password
             ) as connection:
-    
             cursor = connection.cursor()
 
             sql = """
@@ -163,17 +197,15 @@ def delete_product_db(product_id):
             return last_product_number
     except Exception as ex:
         print('Failed to open connection', ex)
+    # finally:
+    #     close_connection()
 
                                      ############## Courier Section ###################
 
 def new_courier_db(new_name, new_number):
     try:
-        with pymysql.connect(
-            host = host_name, database = database_name,
-            user = user_name, password = user_password
-            ) as connection:
-
-            cursor = connection.cursor()
+        connection = get_connection()
+        with connection.cursor() as cursor:
 
             sql = """
                 INSERT INTO courier (courier_name, courier_number)
@@ -193,15 +225,13 @@ def new_courier_db(new_name, new_number):
     except Exception as ex:
         print('Failed to open connection', ex)
         time.sleep(4)
+    finally:
+        close_connection()
 
 def load_courier_db():
     try:
-        with pymysql.connect(
-            host = host_name , database = database_name,
-            user = user_name , password = user_password
-            ) as connection:
-    
-            cursor = connection.cursor()
+        connection = get_connection()
+        with connection.cursor() as cursor:
 
             cursor.execute('SELECT courier_id, courier_name, courier_number FROM courier ORDER BY courier_id ASC')
 
@@ -209,18 +239,22 @@ def load_courier_db():
             cursor.close()
             if not rows:
                 return
-            return rows
+            courier_list = []
+            for courier in rows:
+                courier_info = {'courier_id': rows[0],
+                                "courier_name": rows[1],
+                                "courier_number": rows[2]}
+                courier_list.append(courier_info)
+            return courier_list
     except Exception as ex:
         print('Failed to open connection', ex)
+    finally:
+        close_connection()
 
 def update_courier_both_db(courier_id, courier_name, courier_number):
     try:
-        with pymysql.connect(
-            host = host_name , database = database_name,
-            user = user_name , password = user_password
-            ) as connection:
-    
-            cursor = connection.cursor()
+        connection = get_connection()
+        with connection.cursor() as cursor:
 
             sql = """
                 UPDATE courier SET courier_name = %s, courier_number = %s WHERE courier_id = %s;
@@ -232,15 +266,13 @@ def update_courier_both_db(courier_id, courier_name, courier_number):
             cursor.close()
     except Exception as ex:
         print('Failed to open connection', ex)
+    finally:
+        close_connection()
 
 def update_courier_name_db(courier_id, courier_name):
     try:
-        with pymysql.connect(
-            host = host_name , database = database_name,
-            user = user_name , password = user_password
-            ) as connection:
-    
-            cursor = connection.cursor()
+        connection = get_connection()
+        with connection.cursor() as cursor:
 
             sql = """
                 UPDATE courier SET courier_name = %s WHERE courier_id = %s;
@@ -252,15 +284,13 @@ def update_courier_name_db(courier_id, courier_name):
             cursor.close()
     except Exception as ex:
         print('Failed to open connection', ex)
+    finally:
+        close_connection()
 
 def update_courier_number_db(courier_id, courier_number):
     try:
-        with pymysql.connect(
-            host = host_name , database = database_name,
-            user = user_name , password = user_password
-            ) as connection:
-    
-            cursor = connection.cursor()
+        connection = get_connection()
+        with connection.cursor() as cursor:
 
             sql = """
                 UPDATE courier SET courier_number = %s WHERE courier_id = %s;
@@ -272,15 +302,13 @@ def update_courier_number_db(courier_id, courier_number):
             cursor.close()
     except Exception as ex:
         print('Failed to open connection', ex)
+    finally:
+        close_connection()
 
 def delete_courier_db(courier_id):
     try:
-        with pymysql.connect(
-            host = host_name , database = database_name,
-            user = user_name , password = user_password
-            ) as connection:
-    
-            cursor = connection.cursor()
+        connection = get_connection()
+        with connection.cursor() as cursor:
 
             sql = """
                 DELETE FROM courier WHERE courier_id = %s;
@@ -299,6 +327,8 @@ def delete_courier_db(courier_id):
             return last_product_number
     except Exception as ex:
         print('Failed to open connection', ex)
+    finally:
+        close_connection()
 
 
 

@@ -5,7 +5,6 @@ import json
 from functions import * 
 from db_app import *    
 
-
 # need to try for all the input ones 
 if __name__ == '__main__':
     
@@ -32,7 +31,6 @@ if __name__ == '__main__':
                     print_products(product_list)
                     if product_list == None:
                         continue
-                    # save_product(product_list)
                     short_pause()
                     continue
 
@@ -50,8 +48,6 @@ if __name__ == '__main__':
                         continue
                     #todo
                     new_products(new_product, new_price)
-                    # save_product_db(product_list, new_product, new_price)
-                    # save_product(product_list)
                     product_list = load_product_db()
                     print_products(product_list)
                     short_pause()
@@ -73,7 +69,6 @@ if __name__ == '__main__':
                                 value_error()
                                 continue
                             product_list = load_product_db()
-                            # update_saved_product(product_list)
                             short_pause()
                             clear_screen()
                             full_menu_product(product_list)
@@ -99,7 +94,6 @@ if __name__ == '__main__':
                         value_error()
                         continue
                     delete_product(product_list, delete_products)
-                    # update_saved_product(product_list)
                     continue
 
                 # Full menu with prices
@@ -109,7 +103,6 @@ if __name__ == '__main__':
                     full_menu_product(product_list)
                     if product_list == None:
                         continue
-                    # save_product(product_list)
                     short_pause()
                     continue
 
