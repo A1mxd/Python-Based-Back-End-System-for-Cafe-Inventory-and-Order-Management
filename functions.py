@@ -160,10 +160,9 @@ def print_products(product_list):
         short_pause()
         clear_screen()
         return
-    # print('\t***List of products in the menu***')
+    print('\t***List of products in the menu***')
     # for products in product_list:
     #     print(products[1])
-    
     for products in product_list:
         print(products['name'])
 
@@ -176,14 +175,14 @@ def print_index_products(product_list):
         clear_screen()
         return
     print('\t***Product List***')
-    for product in product_list:
-        print(f'Product_id: {str(product[0])}, name: {product[1]}, price: {product[2]}')
+    # for product in product_list:
+    #     print(f'Product_id: {str(product[0])}, name: {product[1]}, price: {product[2]}')
 
-    # for products in product_list:
-    #     product_id = products['product_id']
-    #     name = products['name']
-    #     price = products["price"]
-    #     print(f'Index Number: {index} -  Name: {name}, Price: £{price:.2f}')
+    for products in product_list:
+        index = products['product_id']
+        name = products['name']
+        price = products["price"]
+        print(f'Index Number: {index} -  Name: {name}, Price: £{price:.2f}')
     
 
 
@@ -219,6 +218,7 @@ def update_product(product_id):
             value_error()
             return
         update_product_price_db(product_id, update_product_price)
+        
 
     elif customer_input == 3:
         update_product_name = str(input('\nInput the new product name: '))
@@ -288,22 +288,38 @@ def full_menu_product(product_list):
         clear_screen()
         return
     print('\t***Full Product Menu***')
-    for product in product_list:
-        print(f'Name: {product[1]}, Price: {product[2]}')
+    # for product in product_list:
+    #     print(f'Name: {product[1]}, Price: {product[2]}')
+
+    for products in product_list:
+        index = products['product_id']
+        name = products['name']
+        price = products["price"]
+        print(f'Name: {name}, Price: £{price:.2f}')
 
 def save_product(product_list):
-    with open('products.json', 'w+') as products_file:
-        json.dump(product_list, products_file, indent=4)
-        
-    products_file.close()
+    try:
+        with open('products.json', 'w+') as products_file:
+            for product in product_list:
+                product['price'] = float(product['price'])
+            json.dump(product_list, products_file, indent=4)
+            
+        products_file.close()
+    except:
+        clear_screen()
+        print('File json error')
+        short_pause()
+        return
     return
 
-def update_saved_product(product_list):
-    with open('products.json', 'w+') as products_file:
-        json.dump(product_list, products_file, indent=4)
+# def update_saved_product(product_list):
+#     with open('products.json', 'w+') as products_file:
+#         for product in product_list:
+#             product['price'] = float(product['price'])
+#         json.dump(product_list, products_file, indent=4)
         
-    products_file.close()
-    return
+#     products_file.close()
+#     return
 
 
                                          ############## Order Section ###################
@@ -515,7 +531,7 @@ def update_courier_list(courier_index):
         clear_screen()
         return 
     print
-    if courier_index <= courier_list[-1][0] and not courier_index <= 0:
+    if courier_index <= courier_list[-1]['courier_id'] and not courier_index <= 0:
         print('\t***Update existing Courier***')
         courier_input = int(input('(1) to update Courier name \
                                     \n(2) to update Courier number\
@@ -565,7 +581,7 @@ def delete_courier(courier_list, delete_couriers):
         return 
     confirm = confirmation()
     if confirm == 'y' or confirm == 'yes':
-        if  delete_couriers <= courier_list[-1][0] and not delete_couriers <= 0:
+        if  delete_couriers <= courier_list[-1]['courier_id'] and not delete_couriers <= 0:
             print('Deleting the product...')
             short_pause()
             last_delete= delete_courier_db(delete_couriers)
@@ -578,7 +594,7 @@ def delete_courier(courier_list, delete_couriers):
                 clear_screen()
                 return
         else: 
-            if courier_list[-1][0] == 0:
+            if courier_list[-1]['courier_id'] == 0:
                 clear_screen()
                 print('No couriers to delete')
                 short_pause()
@@ -586,7 +602,7 @@ def delete_courier(courier_list, delete_couriers):
                 clear_screen()
                 courier_list = load_courier_db()
                 print('Invalid input')
-                print(f'The last courier was {courier_list[-1][0]}')
+                print(f'The last courier was {courier_list[-1]["courier_id"]}')
                 short_pause()
     elif confirm == 'n' or confirm == 'no':
         print('Cancelled the deletion...')
@@ -598,15 +614,26 @@ def delete_courier(courier_list, delete_couriers):
         short_pause()
     
 def save_courier(courier_list):
-    with open('couriers.json', 'w+') as couriers_file:
-        json.dump(courier_list, couriers_file, indent=4)
+    try:
         
-    couriers_file.close()
+        with open('couriers.json', 'w+') as couriers_file:
+            for courier in courier_list:
+                courier['price'] = float(courier['price'])
+            json.dump(courier_list, couriers_file, indent=4)
+            
+        couriers_file.close()
+    except:
+        clear_screen()
+        print('File json error')
+        short_pause()
+        return
     return
 
-def update_saved_courier(courier_list):
-    with open('couriers.json', 'w+') as couriers_file:
-        json.dump(courier_list, couriers_file, indent=4)
+# def update_saved_courier(courier_list):
+#     with open('couriers.json', 'w+') as couriers_file:
+#         for courier in courier_list:
+#             courier['price'] = float(courier['price'])
+#         json.dump(courier_list, couriers_file, indent=4)
         
-    couriers_file.close()
-    return   
+#     couriers_file.close()
+#     return   

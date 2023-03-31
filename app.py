@@ -31,6 +31,7 @@ if __name__ == '__main__':
                     print_products(product_list)
                     if product_list == None:
                         continue
+                    save_product(product_list)
                     short_pause()
                     continue
 
@@ -50,6 +51,7 @@ if __name__ == '__main__':
                     new_products(new_product, new_price)
                     product_list = load_product_db()
                     print_products(product_list)
+                    save_product(product_list)
                     short_pause()
                     continue
 
@@ -69,6 +71,7 @@ if __name__ == '__main__':
                                 value_error()
                                 continue
                             product_list = load_product_db()
+                            save_product(product_list)
                             short_pause()
                             clear_screen()
                             full_menu_product(product_list)
@@ -94,6 +97,8 @@ if __name__ == '__main__':
                         value_error()
                         continue
                     delete_product(product_list, delete_products)
+                    product_list = load_product_db()
+                    save_product(product_list)
                     continue
 
                 # Full menu with prices
@@ -247,7 +252,7 @@ if __name__ == '__main__':
                         continue
                     update_courier = int(input('Input the index value of the courier: '))
                     update_courier_list(update_courier)
-                    update_saved_courier(courier_list)
+                    save_courier(courier_list)
                     clear_screen()
                     print('\t***Updated Courier***')
                     short_pause()
@@ -266,7 +271,7 @@ if __name__ == '__main__':
                         value_error()
                         continue
                     delete_courier(courier_list, delete_couriers)
-                    update_saved_courier(courier_list)
+                    save_courier(courier_list)
                     continue
                 
                 #Not an integer
