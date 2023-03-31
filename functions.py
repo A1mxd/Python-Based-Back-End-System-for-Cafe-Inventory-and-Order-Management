@@ -303,6 +303,7 @@ def update_saved_product(product_list):
 def print_orders():
     global order_list
     clear_screen()
+    print('\t***List of Orders***')
     for index, orders in enumerate(order_list):
         index += 1
         name = orders['customer_name']
@@ -381,7 +382,9 @@ def update_order(order_list):
         print('\t***Update customer Information***')
         customer_input = int(input('(1) to change your name \
                                 \n(2) to change your address\
-                                \n(3) to change your number \n\n\n\
+                                \n(3) to change your number \
+                                \n(4) to change your items \
+                                \n(5) to change your courier \n\n\n\
                                 \nType the number:'))
         if customer_input == 1:
             update_name_input = str(input('Input the new name: '))
@@ -401,6 +404,22 @@ def update_order(order_list):
                 invalid_input()
                 return
             order_list[Customers_order]['customer_phone']  = update_number_input
+        elif customer_input == 4:
+            try:
+                update_items_input = int(input('Input the updated items: '))
+            except ValueError:
+                value_error()
+                return
+            if update_items_input == '':
+                invalid_input()
+                return
+            order_list[Customers_order]['items']  = update_items_input
+        elif customer_input == 3:
+            update_courier_input = input('Input the updated courier: ')
+            if update_courier_input == '':
+                invalid_input()
+                return
+            order_list[Customers_order]['courier']  = update_courier_input
         else:
             print('Invalid Input')
     else: 

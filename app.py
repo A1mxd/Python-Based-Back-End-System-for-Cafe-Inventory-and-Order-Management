@@ -166,9 +166,10 @@ if __name__ == '__main__':
                     items_chosen = input('Input all the product items index with comma separating (eg. 3, 2, 1) \
                                          \n\nInput the product index: ')
                     clear_screen()
-                    print_courier_list()
+                    courier_list = load_courier_db()
+                    print_courier_list(courier_list)
                     try:
-                        courier_index = int(input(f'Input the courier index: '))
+                        courier_index = int(input(f'\nInput the courier index: '))
                     except ValueError:
                         value_error()
                         continue
@@ -180,7 +181,7 @@ if __name__ == '__main__':
                     continue
 
                 elif om_user_input == 3:
-                    update_order(order_list)
+                    update_order_status(order_list)
                     update_saved_order()
                     continue
 
