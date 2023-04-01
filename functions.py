@@ -210,7 +210,7 @@ def update_product(product_id):
         if update_product_name == '':
             invalid_input()
             return
-        update_product_price_db(product_id, update_product_name)
+        update_product_name_db(product_id, update_product_name)
     elif customer_input == 2:
         try:
             update_product_price = float(input('\nInput the new product price: £'))
@@ -537,30 +537,33 @@ def update_courier_list(courier_index):
                                     \n(2) to update Courier number\
                                     \n(3) to update both Courier name and number  \n\n\n\
                                     \nType the number:'))
-        
         if courier_input == 1:
+            update_courier_name = str(input('\nInput the new product name: '))
             if update_courier_name == '':
                 invalid_input()
-                return
-            update_courier_name = str(input('\nInput the new product name: '))
+                return 21
             update_courier_name_db(courier_index, update_courier_name)
         elif courier_input == 2:
-            if update_courier_name == '':
-                invalid_input()
-                return
+
             try:
                 update_courier_number = int(input('\nInput the new courier number: '))
+                if update_courier_number == '':
+                    invalid_input()
+                    return 21
             except ValueError:
                 value_error()
                 return
             update_courier_name_db(courier_index, update_courier_number)
         elif courier_input == 3:
+            update_courier_name = str(input('\nInput the new product name: '))
             if update_courier_name == '':
                 invalid_input()
-                return
-            update_courier_name = str(input('\nInput the new product name: '))
+                return 21
             try:
                 update_courier_number = int(input('\nInput the new courier number: '))
+                if update_courier_number == '':
+                    invalid_input()
+                    return 21
             except ValueError:
                 value_error()
                 return
@@ -617,8 +620,6 @@ def save_courier(courier_list):
     try:
         
         with open('couriers.json', 'w+') as couriers_file:
-            for courier in courier_list:
-                courier['price'] = float(courier['price'])
             json.dump(courier_list, couriers_file, indent=4)
             
         couriers_file.close()

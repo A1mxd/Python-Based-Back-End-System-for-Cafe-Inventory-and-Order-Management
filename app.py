@@ -64,7 +64,7 @@ if __name__ == '__main__':
                         continue
                     try:
                         index_user_input = int(input('\nInput the index value of the product: '))
-                        if index_user_input <= product_list[-1][0] and not index_user_input<= 0:  
+                        if index_user_input <= product_list[-1]['product_id'] and not index_user_input<= 0:  
                             try:
                                 update_product(index_user_input)
                             except ValueError:
@@ -251,7 +251,10 @@ if __name__ == '__main__':
                     if courier_list == None:
                         continue
                     update_courier = int(input('Input the index value of the courier: '))
-                    update_courier_list(update_courier)
+                    no_update = update_courier_list(update_courier)
+                    if no_update == 21:
+                        continue
+                    courier_list = load_courier_db()
                     save_courier(courier_list)
                     clear_screen()
                     print('\t***Updated Courier***')
