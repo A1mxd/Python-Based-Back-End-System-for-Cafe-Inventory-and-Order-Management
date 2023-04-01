@@ -67,9 +67,24 @@ if __name__ == '__main__':
                         continue
                     try:
                         index_user_input = int(input('\nInput the index value of the product: '))
-                        if index_user_input <= product_list[-1]['product_id'] and not index_user_input<= 0:  
+                        if index_user_input <= product_list[-1]['product_id'] and not index_user_input<= 0:
+                            found = 0
+                            for courier in product_list:
+                                if index_user_input == courier['product_id']:
+                                    found = 1
+                                    continue  
+                            if found != 1:
+                                clear_screen()
+                                print('\t***Invalid Product id***\t')
+                                short_pause()
+                                continue
                             try:
-                                update_product(index_user_input)
+                                cancel_update = update_product(index_user_input)
+                                if cancel_update == 21:
+                                    clear_screen()
+                                    print('\t***Canceled update***')
+                                    short_pause()
+                                    continue
                             except ValueError:
                                 value_error()
                                 continue
@@ -81,7 +96,9 @@ if __name__ == '__main__':
                             short_pause()
                             continue
                         else :
-                            invalid_input()
+                            clear_screen()
+                            print('\t***Invalid Product id***\t')
+                            short_pause()
                             continue
                     except ValueError:
                         value_error()
@@ -96,6 +113,16 @@ if __name__ == '__main__':
                         continue
                     try:
                         delete_products = int(input('\n\nInput the index value of the product to delete: '))
+                        found = 0
+                        for courier in product_list:
+                            if delete_products == courier['product_id']:
+                                found = 1
+                                continue  
+                        if found != 1:
+                            clear_screen()
+                            print('\t***Invalid Product id***\t')
+                            short_pause()
+                            continue
                     except ValueError:
                         value_error()
                         continue
@@ -179,7 +206,12 @@ if __name__ == '__main__':
                     continue
 
                 elif om_user_input == 4:
-                    update_order(order_list)
+                    cancel_update =update_order(order_list)
+                    if cancel_update == 21:
+                        clear_screen()
+                        print('\t***Canceled update***')
+                        short_pause()
+                        continue
                     update_saved_order(order_list)
                     continue
                 
@@ -239,10 +271,20 @@ if __name__ == '__main__':
                     print_courier_list(courier_list)
                     if courier_list == None:
                         continue
-                    update_courier = int(input('Input the index value of the courier: '))
+                    try:
+                        update_courier = int(input('\nInput the index value of the courier: ')) 
+                    except ValueError:
+                        value_error()
+                        continue
                     no_update = update_courier_list(update_courier)
                     if no_update == 21:
                         continue
+                    elif no_update == 50:
+                        clear_screen()
+                        print('\t***Canceled update***')
+                        short_pause()
+                        continue
+                    short_pause()
                     courier_list = load_courier_db()
                     save_courier(courier_list)
                     clear_screen()
@@ -259,6 +301,16 @@ if __name__ == '__main__':
                         continue
                     try:
                         delete_couriers = int(input('\n\nInput the index value of the courier to delete: '))
+                        found = 0
+                        for courier in courier_list:
+                            if delete_couriers == courier['courier_id']:
+                                found = 1
+                                continue  
+                        if found != 1:
+                            clear_screen()
+                            print('\t***Invalid Courier id***\t')
+                            short_pause()
+                            continue
                     except ValueError:
                         value_error()
                         continue

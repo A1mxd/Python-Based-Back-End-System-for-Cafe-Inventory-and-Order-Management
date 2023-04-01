@@ -79,9 +79,9 @@ def confirmation():
 def get_int_input(text_input, num_options):
     while True:
         try:
+            clear_screen()
             int_input =int(input(text_input))
-            if int_input> num_options and int_input < 0:
-                clear_screen()
+            if int_input> num_options or int_input < 0:
                 print('\t***That was an invalid option***')
                 short_pause()
             else:
@@ -154,8 +154,7 @@ def print_products(product_list):
         clear_screen()
         return
     print('\t***List of products in the menu***')
-    # for products in product_list:
-    #     print(products[1])
+
     for products in product_list:
         print(products['name'])
 
@@ -168,24 +167,22 @@ def print_index_products(product_list):
         clear_screen()
         return
     print('\t***Product List***')
-    # for product in product_list:
-    #     print(f'Product_id: {str(product[0])}, name: {product[1]}, price: {product[2]}')
-
     for products in product_list:
         index = products['product_id']
         name = products['name']
         price = products["price"]
-        print(f'Index Number: {index} -  Name: {name}, Price: £{price:.2f}')
+        print(f'Product id : {index} -  Name: {name}, Price: £{price:.2f}')
     
 
 
 #specific update name or price
-def customer_input_option():
-    print('\t***Update existing Product***')
-    customer_input = int(input('(1) to update product name \
-                                \n(2) to update product price\
-                                \n(3) to update both product price and name  \n\n\n\
-                                \nType the number:'))
+def customer_text_options():
+    customer_input = '\t***Update Existing Product Options***\t \
+                        \n(0) to cancel\
+                        \n(1) to update product name\
+                        \n(2) to update product price\
+                        \n(3) to update both product price and name  \n\n\n\
+                        \nType the number:'
     return customer_input
 
 def update_product(product_id):
@@ -197,7 +194,10 @@ def update_product(product_id):
         clear_screen()
         return
     clear_screen()
-    customer_input = customer_input_option()
+    c_text = customer_text_options()
+    customer_input = get_int_input(c_text, 3)
+    if customer_input == 0:
+        return 21
     if customer_input == 1:
         update_product_name = str(input('\nInput the new product name: '))
         if update_product_name == '':
@@ -281,9 +281,6 @@ def full_menu_product(product_list):
         clear_screen()
         return
     print('\t***Full Product Menu***')
-    # for product in product_list:
-    #     print(f'Name: {product[1]}, Price: {product[2]}')
-
     for products in product_list:
         index = products['product_id']
         name = products['name']
@@ -304,15 +301,6 @@ def save_product(product_list):
         short_pause()
         return
     return
-
-# def update_saved_product(product_list):
-#     with open('products.json', 'w+') as products_file:
-#         for product in product_list:
-#             product['price'] = float(product['price'])
-#         json.dump(product_list, products_file, indent=4)
-        
-#     products_file.close()
-#     return
 
 
                                          ############## Order Section ###################
@@ -399,13 +387,17 @@ def update_order(order_list):
     if  last_order >= Customers_order and not Customers_order <= 0:
         Customers_order -= 1
         clear_screen()
-        print('\t***Update customer Information***')
-        customer_input = int(input('(1) to change your name \
+        customer_text_options = '\t***Update customer Information Options****\t \
+                                \n(0) to cancel \
+                                \n(1) to change your name \
                                 \n(2) to change your address\
                                 \n(3) to change your number \
                                 \n(4) to change your items \
                                 \n(5) to change your courier \n\n\n\
-                                \nType the number:'))
+                                \nType the number: '
+        customer_input = get_int_input(customer_text_options, 5)
+        if customer_input == 0:
+            return 21
         if customer_input == 1:
             update_name_input = str(input('Input the new name: '))
             if update_name_input == '':
@@ -498,13 +490,12 @@ def print_courier_list(courier_list):
         short_pause()
         clear_screen()
         return 
-    # for courier in courier_list:
-    #     print(f'Product_id: {str(courier[0])}, name: {courier[1]}, price: {courier[2]}')
+
     for courier in courier_list:
         index = courier['courier_id']
         name = courier['courier_name']
         number = courier["courier_number"]
-        print(f'Courier number : {index} - Name: {name}, Number: {number}')
+        print(f'Courier id : {index} - Name: {name}, Number: {number}')
     
 
 def new_courier(courier_name, courier_number):
@@ -523,18 +514,33 @@ def update_courier_list(courier_index):
         short_pause()
         clear_screen()
         return 
-    print
+    
     if courier_index <= courier_list[-1]['courier_id'] and not courier_index <= 0:
-        print('\t***Update existing Courier***')
-        courier_input = int(input('(1) to update Courier name \
+        found = 0
+        for courier in courier_list:
+            if courier_index == courier['courier_id']:
+                found = 1
+                continue
+        # if found in the table the id then quit the function from the for loop
+        if found != 1:
+            clear_screen()
+            print('\t***Invalid Courier id***\t')
+            short_pause()
+            return 21
+        courier_text_options = '\t***Update existing Courier***\t \
+                                    \n(0) to cancel \
+                                    \n(1) to update Courier name \
                                     \n(2) to update Courier number\
                                     \n(3) to update both Courier name and number  \n\n\n\
-                                    \nType the number:'))
+                                    \nType the number: '
+        courier_input = get_int_input(courier_text_options, 3)
+        if courier_input == 0:
+            return 50
         if courier_input == 1:
             update_courier_name = str(input('\nInput the new product name: '))
             if update_courier_name == '':
                 invalid_input()
-                return 219
+                return 21
             update_courier_name_db(courier_index, update_courier_name)
         elif courier_input == 2:
 
@@ -565,7 +571,10 @@ def update_courier_list(courier_index):
             return print('Invalid Input')
         courier_list = load_courier_db()
     else:
-        return print('No couriers to update')
+        clear_screen()
+        print('\t***Invalid Courier Id chosen***')
+        short_pause()
+        return 21
     return
 
 def delete_courier(courier_list, delete_couriers):
@@ -623,11 +632,3 @@ def save_courier(courier_list):
         return
     return
 
-# def update_saved_courier(courier_list):
-#     with open('couriers.json', 'w+') as couriers_file:
-#         for courier in courier_list:
-#             courier['price'] = float(courier['price'])
-#         json.dump(courier_list, couriers_file, indent=4)
-        
-#     couriers_file.close()
-#     return   
