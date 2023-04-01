@@ -74,73 +74,66 @@ def confirmation():
     # empty_input_check(confirm)
     return confirm
 
-                                     ############## Menu Input ###################
+                                     ############## Integer Input ###################
 # get integer input
-def get_int_input(text_inputs, num_options):
+def get_int_input(text_input, num_options):
     while True:
-        break
-    return
+        try:
+            int_input =int(input(text_input))
+            if int_input> num_options and int_input < 0:
+                clear_screen()
+                print('\t***That was an invalid option***')
+                short_pause()
+            else:
+                return int_input
+        except ValueError:
+            value_error()
+                                     ############## Menu Text ###################
+# Main menu text
+def Main_menu_text():
+    m_user_input = '\t***Main Menu options***\t \
+                            \n(0) to exit \
+                            \n(1) for products menu \
+                            \n(2) for order menu \
+                            \n(3) for courier\n\n\n\
+                            \nType a number: '
+    return m_user_input
 
-# Main menu input
-def Main_menu_user_input():
-    print('\t***Main Menu options***')
-    try:
-        m_user_input = int(input('(0) to exit \
-                                \n(1) for products menu \
-                                \n(2) for order menu \
-                                \n(3) for courier\n\n\n\
-                                \nType a number: '))
-        return m_user_input
-    except ValueError:
-        m_user_input= 999999
-        return m_user_input
+#Product Menu text
+def Product_menu_text():
+    pm_user_input =  '\t***Product Menu Options***\t \
+                            \n(0) to return to main menu \
+                            \n(1) for product list \
+                            \n(2) to create new product \
+                            \n(3) to update existing product \
+                            \n(4) to delete a product \
+                            \n(5) for the full menu with prices \n\n\n\
+                            \nType the number: '
+    return pm_user_input
 
-#Product Menu Input
-def Product_menu_input():
-    print('\t***Product Menu Options***')
-    try:
-        pm_user_input =  int(input('(0) to return to main menu \
-                                \n(1) for product list \
-                                \n(2) to create new product \
-                                \n(3) to update existing product \
-                                \n(4) to delete a product \
-                                \n(5) for the full menu with prices \n\n\n\
-                                \nType the number: '))
-        return pm_user_input
-    except ValueError:
-        pm_user_input = 999999
-        return pm_user_input
+#Order Menu text
+def Order_menu_text():
+    om_user_input = '\t***Order Menu Options***\t \
+                        \n(0) to return to main menu \
+                        \n(1) to print order \
+                        \n(2) to create new order \
+                        \n(3) to update existing order status \
+                        \n(4) to update existing order \
+                        \n(5) to delete order \n\n\n\
+                        \nType the number: '
+    return om_user_input
 
-#Order Menu Input
-def Order_menu_function():
-    print('\t***Order Menu Options***')
-    try:
-        om_user_input =  int(input('(0) to return to main menu \
-                                \n(1) to print order \
-                                \n(2) to create new order \
-                                \n(3) to update existing order status \
-                                \n(4) to update existing order \
-                                \n(5) to delete order \n\n\n\
-                                \nType the number: '))  
-        return om_user_input
-    except ValueError:
-        om_user_input = 999999
-        return om_user_input
+#Courier Menu text
+def Courier_menu_text():
+    cm_user_input = '\t***Courier Menu Options***\t \
+                            \n(0) to return to main menu \
+                            \n(1) to print courier list \
+                            \n(2) to add new courier \
+                            \n(3) to update existing courier \
+                            \n(4) to delete courier \n\n\n\
+                            \nType the number: '
+    return cm_user_input
 
-#Courier Menu Input
-def Courier_menu_function():
-    print('\t***Courier Menu Options***')
-    try:
-        cm_user_input =  int(input('(0) to return to main menu \
-                                    \n(1) to print courier list \
-                                    \n(2) to add new courier \
-                                    \n(3) to update existing courier \
-                                    \n(4) to delete courier \n\n\n\
-                                    \nType the number: '))  
-        return cm_user_input
-    except ValueError:
-        cm_user_input = 999999
-        return cm_user_input
     
                                          ############## Product Section ###################
 
@@ -541,7 +534,7 @@ def update_courier_list(courier_index):
             update_courier_name = str(input('\nInput the new product name: '))
             if update_courier_name == '':
                 invalid_input()
-                return 21
+                return 219
             update_courier_name_db(courier_index, update_courier_name)
         elif courier_input == 2:
 

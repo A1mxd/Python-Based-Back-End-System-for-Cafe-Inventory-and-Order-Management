@@ -12,13 +12,16 @@ if __name__ == '__main__':
 # Main Menu #
     while True:
         clear_screen()
-        m_user_input = Main_menu_user_input()
+        mm_text = Main_menu_text()
+        m_user_input = get_int_input(mm_text, 3)
         if m_user_input == 1:
     
         #Products Menu#
             while True:
                 clear_screen()
-                pm_user_input = Product_menu_input()
+                pm_text = Product_menu_text()
+                pm_user_input = get_int_input(pm_text, 5)
+
                 if pm_user_input == 0:
                     clear_screen()
                     print('\t***Returning to main menu***')
@@ -111,17 +114,9 @@ if __name__ == '__main__':
                     short_pause()
                     continue
 
-                #Not an integer
-                elif pm_user_input == 999999:
-                    clear_screen()
-                    print('\t***That was not a number***')
-                    short_pause()
-                    clear_screen()
-                    continue
-
                 else:
                     clear_screen()
-                    print('\t***Invalid Input***')
+                    print('\t***That was an invalid option***')
                     short_pause()
                     clear_screen()
                 continue
@@ -133,7 +128,8 @@ if __name__ == '__main__':
         
             while True:
                 clear_screen()
-                om_user_input = Order_menu_function()  
+                om_text = Order_menu_text()  
+                om_user_input = get_int_input(om_text, 5)
                 # return to main menu     
                 if om_user_input == 0:
                     return_main()
@@ -192,18 +188,10 @@ if __name__ == '__main__':
                     delete_order(order_list)
                     update_saved_order(order_list)
                     continue
-                
-                #Not an integer
-                elif om_user_input == 999999:
-                    clear_screen()
-                    print('\t***That was not a number***')
-                    short_pause()
-                    clear_screen()
-                    continue
 
                 else:
                     clear_screen()
-                    print('\t***Invalid Input***')
+                    print('\t***That was an invalid option***')
                     short_pause()
                     clear_screen()
                     continue
@@ -213,7 +201,8 @@ if __name__ == '__main__':
             clear_screen()
             while True:
                 clear_screen()
-                cm_user_input =Courier_menu_function()  
+                cm_text =Courier_menu_text()  
+                cm_user_input = get_int_input(cm_text, 4)
                 # return to main menu     
                 if cm_user_input == 0:
                     return_main()
@@ -276,29 +265,13 @@ if __name__ == '__main__':
                     delete_courier(courier_list, delete_couriers)
                     save_courier(courier_list)
                     continue
-                
-                #Not an integer
-                elif cm_user_input == 999999:
-                    clear_screen()
-                    print('\t***That was not a number***')
-                    short_pause()
-                    clear_screen()
-                    continue
                     
                 else:
                     clear_screen()
-                    print('\t***Invalid Input***')
+                    print('\t***That was an invalid option***')
                     short_pause()
                     clear_screen()
                     continue
-        
-        #Not an integer
-        elif m_user_input == 999999:
-            clear_screen()
-            print('\t***That was not a number***')
-            short_pause()
-            clear_screen()
-            continue
 
         # Ending the whole code and loop 
         elif m_user_input == 0:
@@ -307,7 +280,7 @@ if __name__ == '__main__':
         # Incorrect inputs and return back to while loop
         else :
             clear_screen()
-            print('\t***Invalid Input***')
+            print('\t***That was an invalid option***')
             short_pause()
             clear_screen()
             continue
