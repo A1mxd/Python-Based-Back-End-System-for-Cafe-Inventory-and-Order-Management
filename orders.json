@@ -1,10 +1,10 @@
 [
     {
         "customer_name": "Ahmed",
-        "customer_address": "782121812",
-        "courier_index": 2,
-        "customer_phone": "217812712871",
+        "customer_address": "65 awdadadad",
+        "courier_index": 6,
+        "customer_phone": "0726262252",
         "status": "Preparing",
-        "items": ""
+        "items": "13, 14"
     }
 ]

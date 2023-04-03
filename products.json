@@ -1,1 +1,12 @@
-null
+[
+    {
+        "product_id": 13,
+        "name": "Tea",
+        "price": 1.0
+    },
+    {
+        "product_id": 14,
+        "name": "coffee",
+        "price": 2.0
+    }
+]

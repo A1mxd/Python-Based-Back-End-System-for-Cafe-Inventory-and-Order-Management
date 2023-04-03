@@ -4,11 +4,6 @@ import json
 
 from functions import * 
 from db_app import *    
-#order number variable start
-#order number (doesn't work in the function files cos of global)
-# def order_number():
-#     global no
-#     no += 1
 
 # need to try for all the input ones 
 if __name__ == '__main__':
@@ -17,13 +12,16 @@ if __name__ == '__main__':
 # Main Menu #
     while True:
         clear_screen()
-        m_user_input = Main_menu_user_input()
+        mm_text = Main_menu_text()
+        m_user_input = get_int_input(mm_text, 3)
         if m_user_input == 1:
     
         #Products Menu#
             while True:
                 clear_screen()
-                pm_user_input = Product_menu_input()
+                pm_text = Product_menu_text()
+                pm_user_input = get_int_input(pm_text, 5)
+
                 if pm_user_input == 0:
                     clear_screen()
                     print('\t***Returning to main menu***')
@@ -54,10 +52,9 @@ if __name__ == '__main__':
                         continue
                     #todo
                     new_products(new_product, new_price)
-                    # save_product_db(product_list, new_product, new_price)
-                    save_product(product_list)
                     product_list = load_product_db()
                     print_products(product_list)
+                    save_product(product_list)
                     short_pause()
                     continue
 
@@ -70,21 +67,38 @@ if __name__ == '__main__':
                         continue
                     try:
                         index_user_input = int(input('\nInput the index value of the product: '))
-                        if index_user_input <= product_list[-1][0] and not index_user_input<= 0:  
+                        if index_user_input <= product_list[-1]['product_id'] and not index_user_input<= 0:
+                            found = 0
+                            for courier in product_list:
+                                if index_user_input == courier['product_id']:
+                                    found = 1
+                                    continue  
+                            if found != 1:
+                                clear_screen()
+                                print('\t***Invalid Product id***\t')
+                                short_pause()
+                                continue
                             try:
-                                update_product(index_user_input)
+                                cancel_update = update_product(index_user_input)
+                                if cancel_update == 21:
+                                    clear_screen()
+                                    print('\t***Canceled update***')
+                                    short_pause()
+                                    continue
                             except ValueError:
                                 value_error()
                                 continue
                             product_list = load_product_db()
-                            update_saved_product(product_list)
+                            save_product(product_list)
                             short_pause()
                             clear_screen()
                             full_menu_product(product_list)
                             short_pause()
                             continue
                         else :
-                            invalid_input()
+                            clear_screen()
+                            print('\t***Invalid Product id***\t')
+                            short_pause()
                             continue
                     except ValueError:
                         value_error()
@@ -99,11 +113,22 @@ if __name__ == '__main__':
                         continue
                     try:
                         delete_products = int(input('\n\nInput the index value of the product to delete: '))
+                        found = 0
+                        for courier in product_list:
+                            if delete_products == courier['product_id']:
+                                found = 1
+                                continue  
+                        if found != 1:
+                            clear_screen()
+                            print('\t***Invalid Product id***\t')
+                            short_pause()
+                            continue
                     except ValueError:
                         value_error()
                         continue
                     delete_product(product_list, delete_products)
-                    # update_saved_product(product_list)
+                    product_list = load_product_db()
+                    save_product(product_list)
                     continue
 
                 # Full menu with prices
@@ -113,21 +138,12 @@ if __name__ == '__main__':
                     full_menu_product(product_list)
                     if product_list == None:
                         continue
-                    save_product(product_list)
                     short_pause()
-                    continue
-
-                #Not an integer
-                elif pm_user_input == 999999:
-                    clear_screen()
-                    print('\t***That was not a number***')
-                    short_pause()
-                    clear_screen()
                     continue
 
                 else:
                     clear_screen()
-                    print('\t***Invalid Input***')
+                    print('\t***That was an invalid option***')
                     short_pause()
                     clear_screen()
                 continue
@@ -139,7 +155,8 @@ if __name__ == '__main__':
         
             while True:
                 clear_screen()
-                om_user_input = Order_menu_function()  
+                om_text = Order_menu_text()  
+                om_user_input = get_int_input(om_text, 5)
                 # return to main menu     
                 if om_user_input == 0:
                     return_main()
@@ -147,7 +164,7 @@ if __name__ == '__main__':
 
                 # Print orders
                 elif om_user_input == 1:
-                    print_orders()
+                    print_orders(order_list)
                     long_pause()
                     continue
 
@@ -160,53 +177,53 @@ if __name__ == '__main__':
                     # TODO: need to make it 11 digit number
                     customer_phone = input('Input your phone number: ')
                     clear_screen()
-                    print()
                     product_list=load_product_db()
                     print_index_products(product_list)
+                    if product_list == None:
+                        continue
                     items_chosen = input('Input all the product items index with comma separating (eg. 3, 2, 1) \
                                          \n\nInput the product index: ')
                     clear_screen()
                     courier_list = load_courier_db()
                     print_courier_list(courier_list)
+                    if courier_list == None:
+                        continue
                     try:
                         courier_index = int(input(f'\nInput the courier index: '))
                     except ValueError:
                         value_error()
                         continue
                     new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen)
-                    save_order()
+                    save_order(order_list)
                     clear_screen()
-                    print_orders()
+                    print_orders(order_list)
                     long_pause()
                     continue
 
                 elif om_user_input == 3:
                     update_order_status(order_list)
-                    update_saved_order()
+                    update_saved_order(order_list)
                     continue
 
                 elif om_user_input == 4:
-                    update_order(order_list)
-                    update_saved_order()
+                    cancel_update =update_order(order_list)
+                    if cancel_update == 21:
+                        clear_screen()
+                        print('\t***Canceled update***')
+                        short_pause()
+                        continue
+                    update_saved_order(order_list)
                     continue
                 
                 # DELETE order
                 elif om_user_input == 5:
                     delete_order(order_list)
-                    update_saved_order()
-                    continue
-                
-                #Not an integer
-                elif om_user_input == 999999:
-                    clear_screen()
-                    print('\t***That was not a number***')
-                    short_pause()
-                    clear_screen()
+                    update_saved_order(order_list)
                     continue
 
                 else:
                     clear_screen()
-                    print('\t***Invalid Input***')
+                    print('\t***That was an invalid option***')
                     short_pause()
                     clear_screen()
                     continue
@@ -216,7 +233,8 @@ if __name__ == '__main__':
             clear_screen()
             while True:
                 clear_screen()
-                cm_user_input =Courier_menu_function()  
+                cm_text =Courier_menu_text()  
+                cm_user_input = get_int_input(cm_text, 4)
                 # return to main menu     
                 if cm_user_input == 0:
                     return_main()
@@ -253,9 +271,22 @@ if __name__ == '__main__':
                     print_courier_list(courier_list)
                     if courier_list == None:
                         continue
-                    update_courier = int(input('Input the index value of the courier: '))
-                    update_courier_list(update_courier)
-                    update_saved_courier(courier_list)
+                    try:
+                        update_courier = int(input('\nInput the index value of the courier: ')) 
+                    except ValueError:
+                        value_error()
+                        continue
+                    no_update = update_courier_list(update_courier)
+                    if no_update == 21:
+                        continue
+                    elif no_update == 50:
+                        clear_screen()
+                        print('\t***Canceled update***')
+                        short_pause()
+                        continue
+                    short_pause()
+                    courier_list = load_courier_db()
+                    save_courier(courier_list)
                     clear_screen()
                     print('\t***Updated Courier***')
                     short_pause()
@@ -270,35 +301,29 @@ if __name__ == '__main__':
                         continue
                     try:
                         delete_couriers = int(input('\n\nInput the index value of the courier to delete: '))
+                        found = 0
+                        for courier in courier_list:
+                            if delete_couriers == courier['courier_id']:
+                                found = 1
+                                continue  
+                        if found != 1:
+                            clear_screen()
+                            print('\t***Invalid Courier id***\t')
+                            short_pause()
+                            continue
                     except ValueError:
                         value_error()
                         continue
                     delete_courier(courier_list, delete_couriers)
-                    update_saved_courier(courier_list)
-                    continue
-                
-                #Not an integer
-                elif cm_user_input == 999999:
-                    clear_screen()
-                    print('\t***That was not a number***')
-                    short_pause()
-                    clear_screen()
+                    save_courier(courier_list)
                     continue
                     
                 else:
                     clear_screen()
-                    print('\t***Invalid Input***')
+                    print('\t***That was an invalid option***')
                     short_pause()
                     clear_screen()
                     continue
-        
-        #Not an integer
-        elif m_user_input == 999999:
-            clear_screen()
-            print('\t***That was not a number***')
-            short_pause()
-            clear_screen()
-            continue
 
         # Ending the whole code and loop 
         elif m_user_input == 0:
@@ -307,7 +332,7 @@ if __name__ == '__main__':
         # Incorrect inputs and return back to while loop
         else :
             clear_screen()
-            print('\t***Invalid Input***')
+            print('\t***That was an invalid option***')
             short_pause()
             clear_screen()
             continue
