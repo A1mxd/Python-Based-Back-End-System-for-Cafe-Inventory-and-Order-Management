@@ -313,7 +313,7 @@ def print_orders(order_list):
         print('\t***No orders to show***')
         short_pause()
         clear_screen()
-        return
+        return 50
     for index, orders in enumerate(order_list):
         index += 1
         name = orders['customer_name']
@@ -341,21 +341,24 @@ def new_order(customer_name, customer_address, customer_phone, courier_index, it
     short_pause()
     return
 
+#TODO: ADD TRY AND EXCEPT
 def save_order(order_list):
+    try:
         with open('orders.json', 'w+') as orders_file:
             json.dump(order_list, orders_file, indent=4)
             
         orders_file.close()
+    except:
+        clear_screen()
+        print('File json error')
+        short_pause()
         return
-
-def update_saved_order(order_list):
-    with open('orders.json', 'w+') as orders_file:
-        json.dump(order_list, orders_file, indent=4)
-        
-    orders_file.close()
     return
+
     
 def update_order_status(order_list):
+    if order_list == []:
+        return 50
     clear_screen()
     print('\t**Order Status***')
     #prints order number and status of the orders
@@ -363,7 +366,6 @@ def update_order_status(order_list):
         index += 1
         status = orders['status']
         print(f'Order Number: {index}, Status: {status}')
-
     last_order = len(order_list) + 1
     Customers_order =int(input('\n\n\nInput your order number: '))
     if  last_order >= Customers_order and not Customers_order <= 0:
@@ -381,7 +383,9 @@ def update_order_status(order_list):
 
 def update_order(order_list):
     #prints order number and name of the orders
-    print_orders()
+    if order_list == []:
+        return 50
+    print_orders(order_list)
     last_order = len(order_list) + 1
     Customers_order =int(input('Input your order number: '))
     if  last_order >= Customers_order and not Customers_order <= 0:
@@ -442,8 +446,10 @@ def update_order(order_list):
 
 def delete_order(order_list):
     global check_input
-    print_orders()
+    print_orders(order_list)
     check_input ='order'
+    if order_list == []:
+        return 50
     try:
         last_order = len(order_list) + 1
         Customers_order =int(input('Input the order number to delete: '))

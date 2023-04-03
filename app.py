@@ -157,6 +157,7 @@ if __name__ == '__main__':
                 clear_screen()
                 om_text = Order_menu_text()  
                 om_user_input = get_int_input(om_text, 5)
+
                 # return to main menu     
                 if om_user_input == 0:
                     return_main()
@@ -164,7 +165,9 @@ if __name__ == '__main__':
 
                 # Print orders
                 elif om_user_input == 1:
-                    print_orders(order_list)
+                    skip = print_orders(order_list)
+                    if skip ==50:
+                        continue
                     long_pause()
                     continue
 
@@ -201,24 +204,36 @@ if __name__ == '__main__':
                     continue
 
                 elif om_user_input == 3:
-                    update_order_status(order_list)
-                    update_saved_order(order_list)
+                    cant_update =update_order_status(order_list)
+                    if cant_update ==50:
+                        clear_screen()
+                        print('\t***No orders to show***')
+                        short_pause()
+                        continue
+                    if cant_update == 21:
+                        continue
+                    save_order(order_list)
                     continue
 
                 elif om_user_input == 4:
                     cancel_update =update_order(order_list)
-                    if cancel_update == 21:
+                    if cancel_update ==50:
+                        clear_screen()
+                        print('\t***No orders to show***')
+                        short_pause()
+                        continue
+                    elif cancel_update == 21:
                         clear_screen()
                         print('\t***Canceled update***')
                         short_pause()
                         continue
-                    update_saved_order(order_list)
+                    save_order(order_list)
                     continue
                 
                 # DELETE order
                 elif om_user_input == 5:
                     delete_order(order_list)
-                    update_saved_order(order_list)
+                    save_order(order_list)
                     continue
 
                 else:
