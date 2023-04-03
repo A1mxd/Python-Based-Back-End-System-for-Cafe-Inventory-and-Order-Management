@@ -12,6 +12,10 @@ user_password = os.environ.get("mysql_pass")
 
 # todo the update and load and delete in my functions and app properly
 # todo this function
+def short_pause():
+    time.sleep(2)
+    return
+
 current_connection = None
 
 def get_connection():
@@ -28,25 +32,7 @@ def close_connection():
     if current_connection:
         current_connection.close()
         current_connection = None
-# def get_connection():
-#     global current_connection
-#     # Optional print statements
-#     if current_connection:
-#         print('connection already running')
-#     else:
-#         print('new connection starting')
-#     if current_connection == None:
-#         current_connection = pymysql.connect(host=host_name, database=database_name,
-#                                              user=user_name, password=user_password)
-    
-#     return current_connection
 
-
-# def close_connection():
-#     if current_connection:
-#         current_connection.close()
-#         print('Connection closed')
-        
 
                                          ############## Product Section ###################
 
@@ -139,6 +125,7 @@ def update_product_name_db(product_id, product_name):
         close_connection()
     except Exception as ex:
         print('Failed to open connection', ex)
+        
     # finally:
     #     close_connection()
 
@@ -325,10 +312,160 @@ def delete_courier_db(courier_id):
     #     close_connection()
 
 
+                                     ############## Order Section ###################
+
+def new_order_db(new_name, new_number, new_address, courier, status, items):
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        sql = """
+            INSERT INTO orders (customer_name, customer_phone, customer_address, courier_id, order_status_id, items)
+            VALUES (%s, %s,%s,%s,%s,%s);
+            """
+        order_values = (new_name, new_number, new_address, courier, status, items)
+
+        cursor.execute(sql, order_values)
+        connection.commit()
+        cursor.execute('SELECT order_id FROM orders')
+
+        rows = cursor.fetchall()
+        order_number = rows[-1][0]
+        cursor.close()
+        close_connection()
+        return order_number
+        
+    except Exception as ex:
+        print('Failed to open connection', ex)
+        short_pause()
+
+def load_order_db():
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        cursor.execute('SELECT o.order_id, o.customer_name, o.customer_phone, o.customer_address, o.courier_id, os.order_status, o.items \
+                        FROM orders o \
+                        INNER JOIN order_status os ON os.order_status_id = o.order_status_id \
+                        ORDER BY o.order_id ASC')
+
+        rows = cursor.fetchall()
+        cursor.close()
+        close_connection()
+        order_list = []
+        if not rows:
+            return order_list
+        for order in rows:
+            order_info = {'order_id': order[0],
+                        'customer_name': order[1],
+                        "customer_phone": order[2],
+                        "customer_address": order[3],
+                        "courier_index": order[4],
+                        "status": order[5],
+                        "items": order[6]} 
+            order_list.append(order_info)
+        
+        return order_list
+    except Exception as ex:
+        print('Failed to open connection', ex)
+        short_pause()
+
+def load_order_status_db():
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        cursor.execute('SELECT  order_status_id, order_status FROM order_status ORDER BY order_status_id ASC')
+
+        rows = cursor.fetchall()
+        cursor.close()
+        close_connection()
+        order_status_list = []
+        if not rows:
+            return order_status_list
+        for order in rows:
+            order_info = {'order_status_id': order[0],
+                        'status_type': order[1]}
+                        
+            order_status_list.append(order_info)
+        return order_status_list
+    except Exception as ex:
+        print('Failed to open connection', ex)
+        short_pause()
 
 
-# def print_menu(product_list):
+def update_order_db(order_id, customer_input, column_name):
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
 
-#     for row in product_list:
-#         print(f'product_id: {str(product[0])}, name: {row[1]}, price: £{row[2]}')
+        sql = """
+            UPDATE orders SET {} = %s WHERE order_id = %s;
+            """.format(column_name)
+        order_values = ( customer_input, order_id)
+        
+        cursor.execute(sql, order_values)
+        connection.commit()
+        cursor.close()
+        close_connection()
+    except Exception as ex:
+        print('Failed to open connection', ex)
+        short_pause()
+
+def delete_order_db(order_id):
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        sql = """
+            DELETE FROM orders WHERE order_id = %s;
+            """
+        courier_values = order_id
+        
+        cursor.execute(sql, courier_values)
+        connection.commit()
+        cursor.execute('SELECT courier_id FROM courier')
+
+        rows = cursor.fetchall()
+        cursor.close()
+        close_connection()
+        if not rows:
+            return
+        last_product_number = rows[-1][0]
+        return last_product_number
+    except Exception as ex:
+        print('Failed to open connection', ex)
+
+def load_order_filter_db(column_name):
+    try:
+        connection = get_connection()
+        cursor = connection.cursor()
+
+        cursor.execute('SELECT o.order_id, o.customer_name, o.customer_phone, o.customer_address, o.courier_id, os.order_status, o.items \
+                        FROM orders o \
+                        INNER JOIN order_status os ON os.order_status_id = o.order_status_id \
+                        ORDER BY {} ASC'. format(column_name) )
+
+        rows = cursor.fetchall()
+        cursor.close()
+        close_connection()
+        order_list = []
+        if not rows:
+            return order_list
+        for order in rows:
+            order_info = {'order_id': order[0],
+                        'customer_name': order[1],
+                        "customer_phone": order[2],
+                        "customer_address": order[3],
+                        "courier_index": order[4],
+                        "status": order[5],
+                        "items": order[6]} 
+            order_list.append(order_info)
+        
+        return order_list
+    except Exception as ex:
+        print('Failed to open connection', ex)
+        short_pause()
+
+    
 

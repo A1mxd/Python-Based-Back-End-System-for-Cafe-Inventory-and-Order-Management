@@ -165,7 +165,9 @@ if __name__ == '__main__':
 
                 # Print orders
                 elif om_user_input == 1:
-                    skip = print_orders(order_list)
+                    order_list= load_order_db()
+                    skip = specific_orders(order_list)
+                    # skip = print_orders(order_list)
                     if skip ==50:
                         continue
                     long_pause()
@@ -179,13 +181,13 @@ if __name__ == '__main__':
                     customer_address = input('Input your address: ')
                     # TODO: need to make it 11 digit number
                     customer_phone = phone_number_checker()
+                    # customer_phone = input('Input your phone number: ')
                     clear_screen()
                     product_list=load_product_db()
                     print_index_products(product_list)
                     if product_list == None:
                         continue
-                    items_chosen = input('Input all the product items index with comma separating (eg. 3, 2, 1) \
-                                         \n\nInput the product index: ')
+                    items_chosen = item_chosen(product_list)
                     clear_screen()
                     courier_list = load_courier_db()
                     print_courier_list(courier_list)
@@ -213,6 +215,7 @@ if __name__ == '__main__':
                         value_error()
                         continue
                     new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen)
+                    order_list= load_order_db()
                     save_order(order_list)
                     clear_screen()
                     print_orders(order_list)
@@ -220,6 +223,7 @@ if __name__ == '__main__':
                     continue
 
                 elif om_user_input == 3:
+                    order_list= load_order_db()
                     cant_update =update_order_status(order_list)
                     if cant_update ==50:
                         clear_screen()
@@ -228,10 +232,12 @@ if __name__ == '__main__':
                         continue
                     if cant_update == 21:
                         continue
+                    order_list= load_order_db()
                     save_order(order_list)
                     continue
 
                 elif om_user_input == 4:
+                    order_list= load_order_db()
                     cancel_update =update_order(order_list)
                     if cancel_update ==50:
                         clear_screen()
@@ -243,12 +249,15 @@ if __name__ == '__main__':
                         print('\t***Canceled update***')
                         short_pause()
                         continue
+                    order_list= load_order_db()
                     save_order(order_list)
                     continue
                 
                 # DELETE order
                 elif om_user_input == 5:
+                    order_list= load_order_db()
                     delete_order(order_list)
+                    order_list= load_order_db()
                     save_order(order_list)
                     continue
 

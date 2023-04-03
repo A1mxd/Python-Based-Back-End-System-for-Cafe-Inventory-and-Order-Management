@@ -17,13 +17,6 @@ from db_app import *
 #                 "price": 4.59}
 #                 ]
 
-# order number with customer info dictionary
-order_list = []
-
-
-# Open the clean new file for orders
-# order_file =open('orders.txt', 'w+')
-# order_file.close
 
 
                             ##############  Extra helpful function Section ###################
@@ -48,7 +41,7 @@ def exit_app():
     print('\t***Exiting App***')
     exit()
 #order number
-def order_number():
+def customer_number():
     global no
     no += 1
 
@@ -82,6 +75,7 @@ def get_int_input(text_input, num_options):
             clear_screen()
             int_input =int(input(text_input))
             if int_input> num_options or int_input < 0:
+                clear_screen()
                 print('\t***That was an invalid option***')
                 short_pause()
             else:
@@ -265,7 +259,7 @@ def delete_product(product_list, delete_products):
     elif confirm == 'n' or confirm == 'no':
         print('Cancelled the deletion...')
         short_pause()
-        print('Back to main menu')
+        print('Back to product menu')
         short_pause()
         return
     else:
@@ -304,9 +298,56 @@ def save_product(product_list):
 
 
                                          ############## Order Section ###################
+def specific_orders(order_list):
+    if order_list == []:
+        clear_screen()
+        print('\t***No orders to show***')
+        short_pause()
+        clear_screen()
+        return 50
+    c_text =  '\t***Sort Orders List Options***\t \
+                        \n(0) to cancel\
+                        \n(1) to sort by status(preparing first)\
+                        \n(2) to sort by courier\
+                        \n(3) to show  all orders information\n\n\n\
+                        \nType the number:'
+    customer_input = get_int_input(c_text, 3)
+    clear_screen()
+    if customer_input == 0:
+        return 50
+    elif customer_input == 1:
+        column_name = 'os.order_status_id'
+        order_filtered_list = load_order_filter_db(column_name)
+        print('\t***List of Orders***')
+        for orders in order_filtered_list:
+            index = orders['order_id']
+            name = orders['customer_name']
+            status = orders['status']
+            courier = orders['courier_index']
+            items = orders['items']
+            print(f'Order Number: {index} -Name: {name}, Courier number: {courier}, Status: {status}, items: {items}')
+    elif customer_input == 2:
+        column_name = 'o.courier_id'
+        order_filtered_list =load_order_filter_db(column_name)
+        print('\t***List of Orders***')
+        for orders in order_filtered_list:
+            index = orders['order_id']
+            name = orders['customer_name']
+            status = orders['status']
+            courier = orders['courier_index']
+            items = orders['items']
+            print(f'Order Number: {index} -Name: {name}, Courier number: {courier}, Status: {status}, items: {items}')
+
+
+    elif customer_input == 3:
+        print_orders(order_list)
+
+
+
 
 def print_orders(order_list):
     clear_screen()
+    order_list = load_order_db()
     print('\t***List of Orders***')
     if order_list == []:
         clear_screen()
@@ -314,8 +355,8 @@ def print_orders(order_list):
         short_pause()
         clear_screen()
         return 50
-    for index, orders in enumerate(order_list):
-        index += 1
+    for orders in order_list:
+        index = orders['order_id']
         name = orders['customer_name']
         status = orders['status']
         address = orders['customer_address']
@@ -323,6 +364,22 @@ def print_orders(order_list):
         courier = orders['courier_index']
         items = orders['items']
         print(f'Order Number: {index} - Name: {name}, address: {address}, Phone number: {phone}, Courier number: {courier}, Status: {status}, items: {items}')
+
+def print_orders_status():
+    clear_screen()
+    order_status_list = load_order_status_db()
+    
+    if order_status_list == []:
+        clear_screen()
+        print('\t***No status type in Table***')
+        short_pause()
+        clear_screen()
+        return
+    print('\t**Status Type***')
+    for status in order_status_list:
+        index = status['order_status_id']
+        status_type = status['status_type']
+        print(f'Status id: {index} - Status type: {status_type}')
 
 def phone_number_checker():
     while True: 
@@ -345,24 +402,47 @@ def phone_number_checker():
             continue
     return customer_phone
 
+def item_chosen(product_list):
+    while True:
+        clear_screen()
+        print_index_products(product_list)
+        update_items_input = input('Input the chosen product items id with comma separating (eg. 3, 2, 1) \
+                                    \n\nInput the product id: ')
+        if update_items_input == '':
+            invalid_input()
+            continue
+        try:
+            update_items = [int(item.strip()) for item in update_items_input.split(',')]
+            found = 0
+            for items in update_items:
+                for products in product_list:
+                    if items == products['product_id']:
+                        found = 1
+                        continue
+                continue
+            if found != 1:
+                clear_screen()
+                print('\t***Invalid product id***\t')
+                short_pause()
+                continue
+            else:
+                return update_items_input
+        except ValueError:
+            invalid_input()
+            short_pause()
+            clear_screen()
+            print('\t**Returning to order Menu**')
+            short_pause()
+            return 21
+
 def new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen):
-    global order_val
-    new_index = len(order_list)
-    status = 'Preparing'
-    order_val = {'customer_name': customer_name,
-                "customer_address": customer_address,
-                "courier_index": courier_index,
-                "customer_phone": customer_phone,
-                "status": status,
-                "items": items_chosen} 
-    order_list.append(order_val)
-    index= new_index + 1
+    status = 1
+    index= new_order_db(customer_name,  customer_phone, customer_address, courier_index,status, items_chosen)
     clear_screen()
     print(f'\t***Your Order number is {index}***')
     short_pause()
     return
 
-#TODO: ADD TRY AND EXCEPT
 def save_order(order_list):
     try:
         with open('orders.json', 'w+') as orders_file:
@@ -378,24 +458,54 @@ def save_order(order_list):
 
     
 def update_order_status(order_list):
+    order_list= load_order_db()
     if order_list == []:
         return 50
     clear_screen()
     print('\t**Order Status***')
     #prints order number and status of the orders
-    for index, orders in enumerate(order_list):
-        index += 1
+    for orders in order_list:
+        index = orders['order_id']
         status = orders['status']
         print(f'Order Number: {index}, Status: {status}')
-    last_order = len(order_list)
-    Customers_order =int(input('\n\n\nInput your order number: '))
+    last_order = order_list[-1]['order_id']
+    try:
+        while True:
+                clear_screen()
+                print_orders(order_list)
+                Customers_order =int(input('\nInput your order number: '))
+                found = 0
+                for order in order_list:
+                    if Customers_order == order['order_id']:
+                        found = 1
+                        continue 
+                if found != 1:
+                    clear_screen()
+                    print('\t***Invalid order number***\t')
+                    short_pause()
+                    continue
+                else:
+                    break
+    except ValueError:
+        invalid_input()
+        short_pause()
+        clear_screen()
+        print('\t**Returning to order Menu**')
+        short_pause()
+        return 21
     if  last_order >= Customers_order and not Customers_order <= 0:
-        Customers_order -= 1
-        update_status_input = str(input('Input the new status: '))
+        print_orders_status()
+        try:
+            update_status_input = int(input('\nInput the index of the type of status: '))
+        except ValueError:
+            value_error()
+            return 21
         if update_status_input == '':
             invalid_input()
-            return
-        order_list[Customers_order]['status']  = update_status_input
+            return 21
+        column_name = 'order_status_id'
+        update_order_db(Customers_order,update_status_input,column_name)
+        # order_list[Customers_order]['status']  = update_status_input
     else: 
         print(f'Invalid input')
         print(f'The last order was {last_order}')
@@ -403,60 +513,143 @@ def update_order_status(order_list):
     return
 
 def update_order(order_list):
+    order_list= load_order_db()
     #prints order number and name of the orders
     if order_list == []:
         return 50
+    try:
+        while True:
+                clear_screen()
+                print_orders(order_list)
+                Customers_order =int(input('\nInput your order number: '))
+                found = 0
+                for order in order_list:
+                    if Customers_order == order['order_id']:
+                        found = 1
+                        continue 
+                if found != 1:
+                    clear_screen()
+                    print('\t***Invalid order number***\t')
+                    short_pause()
+                    continue
+                else:
+                    break
+    except ValueError:
+        invalid_input()
+        short_pause()
+        clear_screen()
+        print('\t**Returning to order Menu**')
+        short_pause()
+        return
     print_orders(order_list)
-    last_order = len(order_list)
-    Customers_order =int(input('Input your order number: '))
+    last_order = order_list[-1]['order_id']
+    
     if  last_order >= Customers_order and not Customers_order <= 0:
-        Customers_order -= 1
         clear_screen()
         customer_text_options = '\t***Update customer Information Options****\t \
                                 \n(0) to cancel \
                                 \n(1) to change your name \
                                 \n(2) to change your address\
                                 \n(3) to change your number \
-                                \n(4) to change your items \
+                                \n(4) to change your product items \
                                 \n(5) to change your courier \n\n\n\
                                 \nType the number: '
         customer_input = get_int_input(customer_text_options, 5)
         if customer_input == 0:
             return 21
         if customer_input == 1:
-            update_name_input = str(input('Input the new name: '))
+            update_name_input = str(input('\nInput the new name: '))
             if update_name_input == '':
                 invalid_input()
                 return
-            order_list[Customers_order]['customer_name']  = update_name_input
+            column_name = 'customer_name'
+            update_order_db(Customers_order,update_name_input,column_name)
         elif customer_input == 2:
-            update_address_input = str(input('Input the new address: '))
+            update_address_input = str(input('\nInput the new address: '))
             if update_address_input == '':
                 invalid_input()
                 return
-            order_list[Customers_order]['customer_address']  = update_address_input
+            column_name = 'customer_address'
+            update_order_db(Customers_order,update_address_input,column_name)
         elif customer_input == 3:
-            update_number_input = input('Input the new number: ')
+            update_number_input = phone_number_checker()
+            # update_number_input = input('\nInput the new number: ')
             if update_number_input == '':
                 invalid_input()
                 return
-            order_list[Customers_order]['customer_phone']  = update_number_input
+            column_name = 'customer_phone'
+            update_order_db(Customers_order,update_number_input,column_name)
         elif customer_input == 4:
+            product_list = load_product_db()
+            clear_screen()
+            while True:
+                clear_screen()
+                print_index_products(product_list)
+                update_items_input = input('\nInput the updated product items index with comma separating (eg. 3, 2, 1) \
+                                            \n\nInput the updated product index: ')
+                if update_items_input == '':
+                    invalid_input()
+                    continue
+                try:
+                    update_items = [int(item.strip()) for item in update_items_input.split(',')]
+                    found = 0
+                    for items in update_items:
+                        for products in product_list:
+                            if items == products['product_id']:
+                                found = 1
+                                continue
+                        continue
+                    if found != 1:
+                        clear_screen()
+                        print('\t***Invalid product id***\t')
+                        short_pause()
+                        continue
+                    else:
+                        break
+                except ValueError:
+                    invalid_input()
+                    short_pause()
+                    clear_screen()
+                    print('\t**Returning to order Menu**')
+                    short_pause()
+                    return
+
+            
+            column_name = 'items'
+            update_order_db(Customers_order,update_items_input,column_name)
+        elif customer_input == 5:
+            courier_list = load_courier_db()
+            print_courier_list(courier_list)
             try:
-                update_items_input = int(input('Input the updated items: '))
+                while True:
+                    print_courier_list(courier_list)
+                    update_courier_input = int(input(f'\nInput the courier index to change to: '))
+                    if update_courier_input == '':
+                        invalid_input()
+                        continue
+                    found = 0
+                    for courier in courier_list:
+                        if update_courier_input == courier['courier_id']:
+                            found = 1
+                            continue
+                    # if found in the table the id then quit the function from the for loop
+                    if found != 1:
+                        clear_screen()
+                        print('\t***Invalid Courier id***\t')
+                        short_pause()
+                        continue
+                    # if found in the table the id then quit the function from the while loop
+                    else:
+                        break
             except ValueError:
-                value_error()
-                return
-            if update_items_input == '':
                 invalid_input()
+                short_pause()
+                clear_screen()
+                print('\t**Returning to order Menu**')
+                short_pause()
                 return
-            order_list[Customers_order]['items']  = update_items_input
-        elif customer_input == 3:
-            update_courier_input = input('Input the updated courier: ')
-            if update_courier_input == '':
-                invalid_input()
-                return
-            order_list[Customers_order]['courier']  = update_courier_input
+            column_name = 'courier_id'
+            update_order_db(Customers_order,update_courier_input,column_name)
         else:
             print('Invalid Input')
     else: 
@@ -466,21 +659,35 @@ def update_order(order_list):
     return
 
 def delete_order(order_list):
-    global check_input
+    order_list =load_order_db()
     print_orders(order_list)
-    check_input ='order'
     if order_list == []:
         return 50
+    
     try:
-        last_order = len(order_list)
-        Customers_order =int(input('Input the order number to delete: '))
+        last_order = order_list[-1]['order_id']
+        while True:
+            clear_screen()
+            print_orders(order_list)
+            Customers_order =int(input('\nInput the order number to delete: '))
+            found = 0
+            for order in order_list:
+                if Customers_order == order['order_id']:
+                    found = 1
+                    continue 
+            if found != 1:
+                clear_screen()
+                print('\t***Invalid order number***\t')
+                short_pause()
+                continue
+            else:
+                break
         confirm = confirmation()
         if confirm == 'y' or confirm == 'yes':
-            Customers_order -= 1
             if  last_order >= Customers_order and not Customers_order <= -1:
-                print('Deleting the product...')
+                print('Deleting the order...')
                 short_pause()
-                del order_list[Customers_order]
+                delete_order_db(Customers_order)
                 print('Deleted')
                 short_pause()
             else: 
@@ -490,7 +697,7 @@ def delete_order(order_list):
         elif confirm == 'n' or confirm == 'no':
             print('Cancelled the deletion...')
             short_pause()
-            print('Back to main menu')
+            print('Back to order menu')
             short_pause()
         else:
             print('Invalid input')
@@ -614,7 +821,7 @@ def delete_courier(courier_list, delete_couriers):
     confirm = confirmation()
     if confirm == 'y' or confirm == 'yes':
         if  delete_couriers <= courier_list[-1]['courier_id'] and not delete_couriers <= 0:
-            print('Deleting the product...')
+            print('Deleting the courier...')
             short_pause()
             last_delete= delete_courier_db(delete_couriers)
             print('Deleted')
@@ -639,7 +846,7 @@ def delete_courier(courier_list, delete_couriers):
     elif confirm == 'n' or confirm == 'no':
         print('Cancelled the deletion...')
         short_pause()
-        print('Back to main menu')
+        print('Back to courier menu')
         short_pause()
     else:
         print('Invalid input')
