@@ -1,1 +1,10 @@
-[]
+[
+    {
+        "customer_name": "AHmed",
+        "customer_address": "213 adhjdwajhda",
+        "courier_index": 6,
+        "customer_phone": "927267272",
+        "status": "Preparing",
+        "items": "13"
+    }
+]

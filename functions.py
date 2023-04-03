@@ -366,7 +366,7 @@ def update_order_status(order_list):
         index += 1
         status = orders['status']
         print(f'Order Number: {index}, Status: {status}')
-    last_order = len(order_list) + 1
+    last_order = len(order_list)
     Customers_order =int(input('\n\n\nInput your order number: '))
     if  last_order >= Customers_order and not Customers_order <= 0:
         Customers_order -= 1
@@ -386,7 +386,7 @@ def update_order(order_list):
     if order_list == []:
         return 50
     print_orders(order_list)
-    last_order = len(order_list) + 1
+    last_order = len(order_list)
     Customers_order =int(input('Input your order number: '))
     if  last_order >= Customers_order and not Customers_order <= 0:
         Customers_order -= 1
@@ -451,7 +451,7 @@ def delete_order(order_list):
     if order_list == []:
         return 50
     try:
-        last_order = len(order_list) + 1
+        last_order = len(order_list)
         Customers_order =int(input('Input the order number to delete: '))
         confirm = confirmation()
         if confirm == 'y' or confirm == 'yes':

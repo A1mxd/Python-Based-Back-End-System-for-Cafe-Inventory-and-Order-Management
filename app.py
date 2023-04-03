@@ -192,7 +192,23 @@ if __name__ == '__main__':
                     if courier_list == None:
                         continue
                     try:
-                        courier_index = int(input(f'\nInput the courier index: '))
+                        while True:
+                            print_courier_list(courier_list)
+                            courier_index = int(input(f'\nInput the courier index: '))
+                            found = 0
+                            for courier in courier_list:
+                                if courier_index == courier['courier_id']:
+                                    found = 1
+                                    continue
+                            # if found in the table the id then quit the function from the for loop
+                            if found != 1:
+                                clear_screen()
+                                print('\t***Invalid Courier id***\t')
+                                short_pause()
+                                continue
+                            # if found in the table the id then quit the function from the while loop
+                            else:
+                                break
                     except ValueError:
                         value_error()
                         continue
