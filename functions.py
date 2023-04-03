@@ -324,6 +324,27 @@ def print_orders(order_list):
         items = orders['items']
         print(f'Order Number: {index} - Name: {name}, address: {address}, Phone number: {phone}, Courier number: {courier}, Status: {status}, items: {items}')
 
+def phone_number_checker():
+    while True: 
+        try:
+            customer_phone = input('Input your phone number: ')
+            if len(customer_phone) == 11:
+                try:
+                    int_test = int(customer_phone)
+                except ValueError:
+                    value_error()
+                    continue
+                break
+            else:
+                clear_screen()
+                print('\t***That was not 11 digits***')
+                short_pause()
+                continue
+        except ValueError:
+            value_error()
+            continue
+    return customer_phone
+
 def new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen):
     global order_val
     new_index = len(order_list)

@@ -178,7 +178,7 @@ if __name__ == '__main__':
                     customer_name = input('Input your name: ')
                     customer_address = input('Input your address: ')
                     # TODO: need to make it 11 digit number
-                    customer_phone = input('Input your phone number: ')
+                    customer_phone = phone_number_checker()
                     clear_screen()
                     product_list=load_product_db()
                     print_index_products(product_list)
