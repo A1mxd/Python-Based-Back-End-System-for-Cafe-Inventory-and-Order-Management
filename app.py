@@ -157,6 +157,7 @@ if __name__ == '__main__':
                 clear_screen()
                 om_text = Order_menu_text()  
                 om_user_input = get_int_input(om_text, 5)
+
                 # return to main menu     
                 if om_user_input == 0:
                     return_main()
@@ -164,7 +165,11 @@ if __name__ == '__main__':
 
                 # Print orders
                 elif om_user_input == 1:
-                    print_orders(order_list)
+                    order_list= load_order_db()
+                    skip = specific_orders(order_list)
+                    # skip = print_orders(order_list)
+                    if skip ==50:
+                        continue
                     long_pause()
                     continue
 
@@ -175,25 +180,42 @@ if __name__ == '__main__':
                     customer_name = input('Input your name: ')
                     customer_address = input('Input your address: ')
                     # TODO: need to make it 11 digit number
-                    customer_phone = input('Input your phone number: ')
+                    customer_phone = phone_number_checker()
+                    # customer_phone = input('Input your phone number: ')
                     clear_screen()
                     product_list=load_product_db()
                     print_index_products(product_list)
                     if product_list == None:
                         continue
-                    items_chosen = input('Input all the product items index with comma separating (eg. 3, 2, 1) \
-                                         \n\nInput the product index: ')
+                    items_chosen = item_chosen(product_list)
                     clear_screen()
                     courier_list = load_courier_db()
                     print_courier_list(courier_list)
                     if courier_list == None:
                         continue
                     try:
-                        courier_index = int(input(f'\nInput the courier index: '))
+                        while True:
+                            print_courier_list(courier_list)
+                            courier_index = int(input(f'\nInput the courier index: '))
+                            found = 0
+                            for courier in courier_list:
+                                if courier_index == courier['courier_id']:
+                                    found = 1
+                                    continue
+                            # if found in the table the id then quit the function from the for loop
+                            if found != 1:
+                                clear_screen()
+                                print('\t***Invalid Courier id***\t')
+                                short_pause()
+                                continue
+                            # if found in the table the id then quit the function from the while loop
+                            else:
+                                break
                     except ValueError:
                         value_error()
                         continue
                     new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen)
+                    order_list= load_order_db()
                     save_order(order_list)
                     clear_screen()
                     print_orders(order_list)
@@ -201,24 +223,42 @@ if __name__ == '__main__':
                     continue
 
                 elif om_user_input == 3:
-                    update_order_status(order_list)
-                    update_saved_order(order_list)
+                    order_list= load_order_db()
+                    cant_update =update_order_status(order_list)
+                    if cant_update ==50:
+                        clear_screen()
+                        print('\t***No orders to show***')
+                        short_pause()
+                        continue
+                    if cant_update == 21:
+                        continue
+                    order_list= load_order_db()
+                    save_order(order_list)
                     continue
 
                 elif om_user_input == 4:
+                    order_list= load_order_db()
                     cancel_update =update_order(order_list)
-                    if cancel_update == 21:
+                    if cancel_update ==50:
+                        clear_screen()
+                        print('\t***No orders to show***')
+                        short_pause()
+                        continue
+                    elif cancel_update == 21:
                         clear_screen()
                         print('\t***Canceled update***')
                         short_pause()
                         continue
-                    update_saved_order(order_list)
+                    order_list= load_order_db()
+                    save_order(order_list)
                     continue
                 
                 # DELETE order
                 elif om_user_input == 5:
+                    order_list= load_order_db()
                     delete_order(order_list)
-                    update_saved_order(order_list)
+                    order_list= load_order_db()
+                    save_order(order_list)
                     continue
 
                 else:

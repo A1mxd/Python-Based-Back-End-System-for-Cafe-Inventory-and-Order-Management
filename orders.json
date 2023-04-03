@@ -1,10 +1,29 @@
 [
     {
+        "order_id": 2,
+        "customer_name": "Johnny",
+        "customer_phone": "07566771770",
+        "customer_address": "76 undine street",
+        "courier_index": 7,
+        "status": "completed",
+        "items": "13"
+    },
+    {
+        "order_id": 3,
         "customer_name": "Ahmed",
-        "customer_address": "65 awdadadad",
+        "customer_phone": "07622622626",
+        "customer_address": "87 undine street",
         "courier_index": 6,
-        "customer_phone": "0726262252",
-        "status": "Preparing",
-        "items": "13, 14"
+        "status": "preparing",
+        "items": "13"
+    },
+    {
+        "order_id": 4,
+        "customer_name": "ahjdhawda",
+        "customer_phone": "028278227",
+        "customer_address": "87 dhshs",
+        "courier_index": 7,
+        "status": "preparing",
+        "items": "13"
     }
 ]
