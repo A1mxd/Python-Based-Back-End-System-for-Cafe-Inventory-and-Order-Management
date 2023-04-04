@@ -60,8 +60,6 @@ def new_product_db(new_product, new_price):
         
     except Exception as ex:
         print('Failed to open connection', ex)
-    # finally:
-    #     close_connection()
         
 
 def load_product_db():
@@ -86,8 +84,6 @@ def load_product_db():
     except Exception as ex:
         print('Failed to open connection', ex)
         time.sleep(4)
-    # finally:
-    #     close_connection()
 
 def update_product_both_db(product_id, product_name, product_price):
     try:
@@ -105,8 +101,7 @@ def update_product_both_db(product_id, product_name, product_price):
         close_connection()
     except Exception as ex:
         print('Failed to open connection', ex)
-    # finally:
-    #     close_connection()
+
         
 #todo try find the row 1 error
 def update_product_name_db(product_id, product_name):
@@ -125,9 +120,7 @@ def update_product_name_db(product_id, product_name):
         close_connection()
     except Exception as ex:
         print('Failed to open connection', ex)
-        
-    # finally:
-    #     close_connection()
+
 
 def update_product_price_db(product_id, product_price):
     try:
@@ -145,8 +138,7 @@ def update_product_price_db(product_id, product_price):
         close_connection()
     except Exception as ex:
         print('Failed to open connection', ex)
-    # finally:
-    #     close_connection()
+
 
 
 def delete_product_db(product_id):
@@ -172,8 +164,7 @@ def delete_product_db(product_id):
         return last_product_number
     except Exception as ex:
         print('Failed to open connection', ex)
-    # finally:
-    #     close_connection()
+
 
                                      ############## Courier Section ###################
 
@@ -201,8 +192,7 @@ def new_courier_db(new_name, new_number):
     except Exception as ex:
         print('Failed to open connection', ex)
         time.sleep(4)
-    # finally:
-    #     close_connection()
+
 
 def load_courier_db():
     try:
@@ -226,8 +216,7 @@ def load_courier_db():
         return courier_list
     except Exception as ex:
         print('Failed to open connection', ex)
-    # finally:
-    #     close_connection()
+9
 
 def update_courier_both_db(courier_id, courier_name, courier_number):
     try:
@@ -242,10 +231,10 @@ def update_courier_both_db(courier_id, courier_name, courier_number):
         cursor.execute(sql, courier_values)
         connection.commit()
         cursor.close()
+        close_connection()
     except Exception as ex:
         print('Failed to open connection', ex)
-    # finally:
-    #     close_connection()
+
 
 def update_courier_name_db(courier_id, courier_name):
     try:
@@ -263,8 +252,6 @@ def update_courier_name_db(courier_id, courier_name):
         close_connection()
     except Exception as ex:
         print('Failed to open connection', ex)
-    # finally:
-    #     close_connection()
 
 def update_courier_number_db(courier_id, courier_number):
     try:
@@ -308,8 +295,6 @@ def delete_courier_db(courier_id):
         return last_product_number
     except Exception as ex:
         print('Failed to open connection', ex)
-    # finally:
-    #     close_connection()
 
 
                                      ############## Order Section ###################

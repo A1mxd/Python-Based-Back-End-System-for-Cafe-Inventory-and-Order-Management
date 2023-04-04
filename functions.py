@@ -64,7 +64,6 @@ def return_main():
 def confirmation():
     print('Are you sure you want to delete it?')
     confirm = str(input('Confirm Y(yes)/N(no): ').lower())
-    # empty_input_check(confirm)
     return confirm
 
                                      ############## Integer Input ###################
@@ -179,6 +178,7 @@ def customer_text_options():
                         \nType the number:'
     return customer_input
 
+#
 def update_product(product_id):
     product_list = load_product_db()
     if product_list == None:
@@ -413,14 +413,19 @@ def item_chosen(product_list):
             continue
         try:
             update_items = [int(item.strip()) for item in update_items_input.split(',')]
-            found = 0
+            all_found = 1
             for items in update_items:
+                found = 0
                 for products in product_list:
                     if items == products['product_id']:
                         found = 1
-                        continue
-                continue
-            if found != 1:
+                        break
+                if found != 1:
+                    #breaks the loop early if not all the products are found
+                    all_found = 0
+                    break
+
+            if all_found != 1:
                 clear_screen()
                 print('\t***Invalid product id***\t')
                 short_pause()
@@ -437,8 +442,10 @@ def item_chosen(product_list):
 
 def new_order(customer_name, customer_address, customer_phone, courier_index, items_chosen):
     status = 1
-    index= new_order_db(customer_name,  customer_phone, customer_address, courier_index,status, items_chosen)
+    new_order_db(customer_name,  customer_phone, customer_address, courier_index,status, items_chosen)
     clear_screen()
+    order_list =load_order_db()
+    index = order_list[-1]['order_id']
     print(f'\t***Your Order number is {index}***')
     short_pause()
     return
@@ -505,7 +512,6 @@ def update_order_status(order_list):
             return 21
         column_name = 'order_status_id'
         update_order_db(Customers_order,update_status_input,column_name)
-        # order_list[Customers_order]['status']  = update_status_input
     else: 
         print(f'Invalid input')
         print(f'The last order was {last_order}')
@@ -592,14 +598,19 @@ def update_order(order_list):
                     continue
                 try:
                     update_items = [int(item.strip()) for item in update_items_input.split(',')]
-                    found = 0
+                    all_found = 1
                     for items in update_items:
+                        found = 0
                         for products in product_list:
                             if items == products['product_id']:
                                 found = 1
-                                continue
-                        continue
-                    if found != 1:
+                                break
+                        if found != 1:
+                            #breaks the loop early if not all the products are found
+                            all_found = 0
+                            break
+                        
+                    if all_found != 1:
                         clear_screen()
                         print('\t***Invalid product id***\t')
                         short_pause()

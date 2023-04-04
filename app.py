@@ -8,7 +8,6 @@ from db_app import *
 # need to try for all the input ones 
 if __name__ == '__main__':
     
-#TODO: need to do options in string rather than integer for less errors and problem if i am not using it or to store 
 # Main Menu #
     while True:
         clear_screen()
@@ -50,7 +49,6 @@ if __name__ == '__main__':
                         print('\t***Invalid price inputted***')
                         short_pause()
                         continue
-                    #todo
                     new_products(new_product, new_price)
                     product_list = load_product_db()
                     print_products(product_list)
@@ -179,7 +177,6 @@ if __name__ == '__main__':
                     print('\t***Input New Order***')
                     customer_name = input('Input your name: ')
                     customer_address = input('Input your address: ')
-                    # TODO: need to make it 11 digit number
                     customer_phone = phone_number_checker()
                     # customer_phone = input('Input your phone number: ')
                     clear_screen()
@@ -360,7 +357,7 @@ if __name__ == '__main__':
                     
                 else:
                     clear_screen()
-                    print('\t***That was an invalid option***')
+                    print('\t***That was an invalid option***') 
                     short_pause()
                     clear_screen()
                     continue
