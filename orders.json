@@ -4,7 +4,7 @@
         "customer_name": "Johnny",
         "customer_phone": "07566771770",
         "customer_address": "76 undine street",
-        "courier_index": 7,
+        "courier_index": 6,
         "status": "completed",
         "items": "13"
     },
@@ -18,57 +18,12 @@
         "items": "13"
     },
     {
-        "order_id": 4,
-        "customer_name": "ahjdhawda",
-        "customer_phone": "028278227",
-        "customer_address": "87 dhshs",
-        "courier_index": 7,
-        "status": "preparing",
-        "items": "13"
-    },
-    {
-        "order_id": 5,
-        "customer_name": "0",
-        "customer_phone": "07655567890",
-        "customer_address": "wadawddaw",
-        "courier_index": 6,
-        "status": "completed",
-        "items": "13, 14, 15"
-    },
-    {
-        "order_id": 6,
-        "customer_name": "Ahmed",
-        "customer_phone": "07506271889",
-        "customer_address": "87 ahahaha",
-        "courier_index": 6,
-        "status": "preparing",
-        "items": "12, 14"
-    },
-    {
-        "order_id": 7,
-        "customer_name": "Ahmed",
-        "customer_phone": "07590091551",
-        "customer_address": "075 adhgadh",
-        "courier_index": 6,
-        "status": "preparing",
-        "items": "12,15,13"
-    },
-    {
-        "order_id": 8,
-        "customer_name": "Ahmed",
-        "customer_phone": "07590091770",
-        "customer_address": "87 ahahahaa",
-        "courier_index": 6,
-        "status": "preparing",
-        "items": "13,14, 13"
-    },
-    {
         "order_id": 9,
         "customer_name": "Bob",
         "customer_phone": "07689091551",
         "customer_address": "87 hampstead road",
-        "courier_index": 7,
-        "status": "preparing",
+        "courier_index": 6,
+        "status": "completed",
         "items": "13, 14"
     }
 ]

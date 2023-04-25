@@ -216,7 +216,7 @@ def load_courier_db():
         return courier_list
     except Exception as ex:
         print('Failed to open connection', ex)
-9
+
 
 def update_courier_both_db(courier_id, courier_name, courier_number):
     try:

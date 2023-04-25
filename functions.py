@@ -420,6 +420,7 @@ def item_chosen(product_list):
                     if items == products['product_id']:
                         found = 1
                         break
+
                 if found != 1:
                     #breaks the loop early if not all the products are found
                     all_found = 0
