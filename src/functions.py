@@ -295,10 +295,9 @@ def save_product(product_list):
             for product in product_list:
                 product['price'] = float(product['price'])
             json.dump(product_list, products_file, indent=4)
-        products_file.close()
-    except:
+    except Exception as e:
         clear_screen()
-        print('File json error')
+        print('File json error', str(e))
         short_pause()
         return
     return
@@ -464,10 +463,9 @@ def save_order(order_list):
         file_path = os.path.join(folder_name, "orders.json")
         with open(file_path, 'w+') as orders_file:
             json.dump(order_list, orders_file, indent=4)
-        orders_file.close()
-    except:
+    except Exception as e:
         clear_screen()
-        print('File json error')
+        print('File json error', str(e))
         short_pause()
         return
     return
@@ -878,11 +876,9 @@ def save_courier(courier_list):
         file_path = os.path.join(folder_name, "couriers.json")
         with open(file_path, 'w+') as couriers_file:
             json.dump(courier_list, couriers_file, indent=4)
-            
-        couriers_file.close()
-    except:
+    except Exception as e:
         clear_screen()
-        print('File json error')
+        print('File json error', str(e))
         short_pause()
         return
     return
