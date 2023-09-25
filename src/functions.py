@@ -66,6 +66,12 @@ def confirmation():
     confirm = str(input('Confirm Y(yes)/N(no): ').lower())
     return confirm
 
+def local_folder():
+    folder_name = "Local"
+    if not os.path.exists(folder_name):
+        os.makedirs(folder_name)
+    return folder_name    
+
                                      ############## Integer Input ###################
 # get integer input
 def get_int_input(text_input, num_options):
@@ -283,11 +289,12 @@ def full_menu_product(product_list):
 
 def save_product(product_list):
     try:
-        with open('products.json', 'w+') as products_file:
+        folder_name = local_folder()
+        file_path = os.path.join(folder_name, "products.json")
+        with open(file_path, 'w+') as products_file:
             for product in product_list:
                 product['price'] = float(product['price'])
             json.dump(product_list, products_file, indent=4)
-            
         products_file.close()
     except:
         clear_screen()
@@ -453,9 +460,10 @@ def new_order(customer_name, customer_address, customer_phone, courier_index, it
 
 def save_order(order_list):
     try:
-        with open('orders.json', 'w+') as orders_file:
+        folder_name = local_folder()
+        file_path = os.path.join(folder_name, "orders.json")
+        with open(file_path, 'w+') as orders_file:
             json.dump(order_list, orders_file, indent=4)
-            
         orders_file.close()
     except:
         clear_screen()
@@ -866,8 +874,9 @@ def delete_courier(courier_list, delete_couriers):
     
 def save_courier(courier_list):
     try:
-        
-        with open('couriers.json', 'w+') as couriers_file:
+        folder_name = local_folder()
+        file_path = os.path.join(folder_name, "couriers.json")
+        with open(file_path, 'w+') as couriers_file:
             json.dump(courier_list, couriers_file, indent=4)
             
         couriers_file.close()

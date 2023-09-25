@@ -1,5 +1,5 @@
 #imports all the stuff from the 
-from app import *
+from src.app import *
 # Testing confirmation loop
 # while True:
 #     while True:

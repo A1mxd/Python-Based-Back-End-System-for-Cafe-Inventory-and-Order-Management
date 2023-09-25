@@ -1,3 +1,1 @@
-# Ahmed-Afrah-mini-project
-
-quick edit for exercise
+# Python-Based Back-End System for Café Inventory and Order Management
